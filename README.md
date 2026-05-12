@@ -56,3 +56,33 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# Nano Tracker Web
+
+1. Copy env
+
+3. Generate application key
+
+php artisan key:generate
+
+4. Buat database (MySQL)
+
+CREATE DATABASE nano_tracker_db;
+CREATE USER 'root'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON nano_tracker_db.* TO 'root'@'localhost';
+FLUSH PRIVILEGES;
+
+5. Update .env pakai your_password
+
+DB_DATABASE=nano_tracker_db
+DB_USERNAME=nano_user
+DB_PASSWORD=your_password
+
+6. Run migrasi
+
+php artisan migrate
+
+7. Start dev server
+
+php artisan serve
+
