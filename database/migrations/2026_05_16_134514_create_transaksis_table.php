@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
+            $table->string('tipe');
+            $table->bigInteger('nominal');
+            $table->string('kategori');
+            $table->dateTime('waktu_transaksi')->useCurrent();
+            $table->text('catatan')->nullable();
             $table->timestamps();
         });
     }
