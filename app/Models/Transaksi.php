@@ -6,5 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaksi extends Model
 {
-    //
+    protected $fillable = [
+        'tipe',
+        'nominal',
+        'kategori',
+        'waktu_transaksi',
+        'catatan'
+    ];
 }
