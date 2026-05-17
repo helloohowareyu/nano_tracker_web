@@ -27,6 +27,6 @@ class TransaksiController extends Controller
             'catatan' => $request->catatan
         ]);
 
-        return redirect()->route('beranda')->with('success', 'Data berhasil disimpan!');
+        return redirect()->route('dashboard')->with('success', 'Data berhasil disimpan!');
     }
 }
