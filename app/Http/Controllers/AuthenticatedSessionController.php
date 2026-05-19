@@ -5,12 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
 use Laravel\Socialite\Facades\Socialite;
+use GuzzleHttp\Client;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -39,12 +35,14 @@ class AuthenticatedSessionController extends Controller
 
     public function redirectToGoogle()
     {
-        return \Socialite::driver('google')->redirect();
+        return Socialite::driver('google')
+        ->with(['access_type' => 'offline', 'prompt' => 'consent'])
+        ->redirect();
     }
 
     public function handleGoogleCallback()
     {
-        $googleUser = \Socialite::driver('google')->user();
+        $googleUser = Socialite::driver('google')->stateless()->user();
 
         $user = User::firstOrCreate([
             'email' => $googleUser->email,

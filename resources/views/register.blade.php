@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Registrasi Akun</title>
     <style>
         * {
             margin: 0;
@@ -12,196 +12,201 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0d1a2e 0%, #1a2a40 100%);
+            background-color: #002244;
             min-height: 100vh;
+        }
+
+        .top-bar {
+            width: 100%;
+            height: 60px;
+            background-color: #F8F9FA;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 30px;
+        }
+
+        .top-bar img {
+            height: 50px;
+            width: auto;
+        }
+
+        .page-wrapper {
+            width: 100%;
+            min-height: calc(100vh - 60px);
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 40px 20px;
+            background-color: #002244;
         }
-        .container {
-            display: flex;
-            background: white;
+
+        .register-card {
+            background-color: #D9D9D9;
             border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 1000px;
-            width: 90%;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 35px;
         }
-        .form-section {
-            flex: 1;
-            padding: 60px 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .logo-section {
-            flex: 1;
-            background: linear-gradient(135deg, #0d1a2e 0%, #1a2a40 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 60px;
-        }
-        .logo-content {
-            text-align: center;
-            color: white;
-        }
-        .logo-content h2 {
-            font-size: 48px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .logo-content .nano {
-            color: #4CAF50;
-        }
-        .logo-content p {
-            font-size: 18px;
-            opacity: 0.8;
-        }
-        h1 {
-            color: #0d1a2e;
+        .register-card h1 {
+            color: #002244;
             font-size: 28px;
+            font-weight: 800;
+            text-align: center;
             margin-bottom: 30px;
-            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
         }
         label {
-            color: #333;
-            font-size: 14px;
+            color: #002244;
+            font-size: 13px;
             font-weight: 500;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             display: block;
         }
         input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
+            padding: 10px 14px;
+            border: none;
+            border-radius: 10px;
+            background-color: #F8F9FA;
             font-size: 14px;
-            transition: border-color 0.3s;
+            color: #002244;
+            outline: none;
         }
         input:focus {
-            outline: none;
-            border-color: #4CAF50;
+            box-shadow: 0 0 0 2px #002244;
         }
-        button[type="submit"] {
-            background: #4CAF50;
-            color: white;
+        .btn-daftar {
+            display: block;
+            margin: 18px auto 0;
+            background-color: #F8F9FA;
+            color: #002244;
             border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
+            padding: 10px 50px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.2s;
         }
-        button[type="submit"]:hover {
-            background: #45a049;
+        .btn-daftar:hover {
+            background-color: #ffffff;
         }
+
         .separator {
-            text-align: center;
-            color: #999;
-            font-size: 14px;
-            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 22px 0 16px;
         }
+        .separator::before,
+        .separator::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: #002244;
+            opacity: 0.6;
+        }
+        .separator span {
+            color: #002244;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
         .google-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            background: white;
-            color: #333;
-            border: 2px solid #e0e0e0;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 14px;
+            gap: 8px;
+            width: max-content;
+            margin: 0 auto;
+            background-color: #F8F9FA;
+            color: #002244;
+            border: 1px solid #002244;
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-size: 13px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.3s;
             text-decoration: none;
+            transition: background 0.2s;
         }
         .google-btn:hover {
-            background: #f5f5f5;
-            border-color: #ddd;
+            background-color: #ffffff;
         }
-        .google-btn img {
-            width: 20px;
-            height: 20px;
+        .google-btn svg {
+            width: 18px;
+            height: 18px;
         }
-        .google-btn p {
-            margin: 0;
-        }
+
         .login-link {
             text-align: center;
-            margin-top: 20px;
-            color: #666;
-            font-size: 14px;
+            margin-top: 18px;
+            color: #002244;
+            font-size: 13px;
         }
         .login-link a {
-            color: #4CAF50;
+            color: #22c55e;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 500;
         }
         .login-link a:hover {
             text-decoration: underline;
         }
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            .logo-section {
-                display: none;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="form-section">
-            <h1>MULAI LACAK KEUANGANMU</h1>
+    <div class="top-bar">
+        <img src="{{ asset('assets/logo.png') }}" alt="Nano Tracker Logo">
+    </div>
+
+    <div class="page-wrapper">
+        <div class="register-card">
+            <h1>REGISTRASI AKUN</h1>
+
             <form action="{{ route('register') }}" method="POST">
                 @csrf
-                <div>
-                    <label for="nama_depan">Nama Depan</label>
-                    <input type="text" name="nama_depan" placeholder="Masukkan nama depan kamu" required>
+                <div class="form-group">
+                    <label for="nama_lengkap">Nama Lengkap</label>
+                    <input type="text" id="nama_lengkap" name="nama_lengkap" required>
                 </div>
-                <div>
-                    <label for="nama_belakang">Nama Belakang</label>
-                    <input type="text" name="nama_belakang" placeholder="Masukkan nama belakang kamu" required>
-                </div>
-                <div>
+                <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" name="email" placeholder="Masukkan email kamu" required>
+                    <input type="email" id="email" name="email" required>
                 </div>
-                <div>
+                <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" name="password" placeholder="Masukkan password kamu" required>
+                    <input type="password" id="password" name="password" required>
                 </div>
-                <div>
+                <div class="form-group">
                     <label for="password_confirmation">Konfirmasi Password</label>
-                    <input type="password" name="password_confirmation" placeholder="Konfirmasi password kamu" required>
+                    <input type="password" id="password_confirmation" name="password_confirmation" required>
                 </div>
-                <button type="submit">Daftar</button>
+
+                <button type="submit" class="btn-daftar">Daftar</button>
             </form>
 
-            <p class="separator">━━━━━━━━━━━━━━ atau ━━━━━━━━━━━━━━</p>
+            <div class="separator">
+                <span>atau</span>
+            </div>
 
             <a href="{{ route('login.google') }}" class="google-btn">
-                <img src="{{ asset('assets/google-icon.png') }}" alt="Google">
-                <p>Masuk dengan Google</p>
+                <img src="{{ asset('assets/google-icon.png') }}" alt="Google Icon">
+                Daftar dengan google
             </a>
 
-            <p class="login-link">Sudah punya akun? <a href="{{ route('login') }}">Masuk Sekarang</a></p>
-        </div>
-        <div class="logo-section">
-            <div class="logo-content">
-                <h2><span class="nano">NANO</span> TRACKER</h2>
-                <p>Kelola Keuangan Anda dengan Cerdas</p>
-            </div>
+            <p class="login-link">
+                Sudah punya akun? <a href="{{ route('login') }}">Login Sekarang</a>
+            </p>
         </div>
     </div>
 </body>

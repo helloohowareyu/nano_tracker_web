@@ -3,13 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Log;
+use App\Models\User;
 
 class RegisteredUserController extends Controller
 {
@@ -21,21 +16,19 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_depan' => ['required', 'string', 'max:50'],
-            'nama_belakang' => ['required', 'string', 'max:50'],
+            'nama_lengkap' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
             'password' => ['required', 'string', 'confirmed'],
         ]);
 
-        $user = \App\Models\User::create([
-            'nama_depan' => $request->nama_depan,
-            'nama_belakang' => $request->nama_belakang,
+        $user = User::create([
+            'nama_lengkap' => $request->nama_lengkap,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => $request->password,
         ]);
 
-        auth()->login($user);
+        Auth::login($user);
 
-        return redirect('/login');
+        return redirect('/dashboard');
     }
 }

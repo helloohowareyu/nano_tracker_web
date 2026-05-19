@@ -1,430 +1,222 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>Login Akun</title>
   <style>
-    /* Add font files for ABeeZee */
-    @font-face {
-      font-family: 'ABeeZee';
-      src: url('{{ asset('figma-export/fonts/abeezee.woff2') }}') format('woff2'),
-           url('{{ asset('figma-export/fonts/abeezee.woff') }}') format('woff');
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    /* Add font files for Cossette Texte */
-    @font-face {
-      font-family: 'Cossette Texte';
-      src: url('{{ asset('figma-export/fonts/cossette-texte.woff2') }}') format('woff2'),
-           url('{{ asset('figma-export/fonts/cossette-texte.woff') }}') format('woff');
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    /* Add font files for Koulen */
-    @font-face {
-      font-family: 'Koulen';
-      src: url('{{ asset('figma-export/fonts/koulen.woff2') }}') format('woff2'),
-           url('{{ asset('figma-export/fonts/koulen.woff') }}') format('woff');
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    :root {
-      --font-family-abeezee: 'ABeeZee', sans-serif;
-      --font-family-cossette-texte: 'Cossette Texte', sans-serif;
-      --font-family-koulen: 'Koulen', sans-serif;
-      --text-white: rgba(255, 255, 255, 1);
-      --text-rgb-23-22-22: rgba(23, 22, 22, 1);
-      --text-rgb-227-220-220: rgba(227, 220, 220, 1);
-      --text-rgb-0-229-50: rgba(0, 229, 50, 1);
-    }
-
-    .text-white {
-      color: var(--text-white);
-    }
-
-    .text-rgb-23-22-22 {
-      color: var(--text-rgb-23-22-22);
-    }
-
-    .text-rgb-227-220-220 {
-      color: var(--text-rgb-227-220-220);
-    }
-
-    .text-rgb-0-229-50 {
-      color: var(--text-rgb-0-229-50);
-    }
-
-    /* CSS Reset */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
+    :root {
+      --color-white: #F8F9FA;
+      --color-navy: #002244;
+      --color-card: #D9D9D9;
+      --color-green: #00C853;
+    }
+
     body {
       width: 100%;
       min-height: 100vh;
-      overflow-x: hidden;
-      background-color: rgba(0, 34, 68, 1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background-color: var(--color-navy);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    img {
-      max-width: 100%;
-      height: auto;
-    }
-
-    .login-43 {
+    .top-bar {
       width: 100%;
-      max-width: 1440px;
-      padding: 24px;
-      background-color: rgba(0, 34, 68, 1);
-      display: flex;
-      gap: 40px;
-    }
-
-    @media (max-width: 1440px) {
-      .login-43 {
-        padding-left: 24px;
-        padding-right: 24px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .login-43 {
-        padding-left: 16px;
-        padding-right: 16px;
-        flex-direction: column;
-      }
-    }
-
-    .rectangle-793-44 {
-      flex: 1;
-      border: 0.7332361340522766px solid rgba(255, 255, 255, 1);
-      border-radius: 39.00575637817383px;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .group-555-45 {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .tombol-info-saldo-46 {
-      background-color: rgba(255, 255, 255, 1);
-      border-radius: 7.332361698150635px;
-      padding: 15px 30px;
-      box-shadow: 0px 0px 4.399416446685791px 0px rgba(0,0,0,0.5);
-      cursor: pointer;
-      border: none;
-    }
-
-    .text-48 {
-      text-align: center;
-      font-family: var(--font-family-abeezee);
-      font-weight: normal;
-      font-size: 11.054764747619629px;
-      letter-spacing: -5%;
-      line-height: 10.654254913330078px;
-      text-decoration: none;
-      text-transform: none;
-      color: var(--text-white);
-    }
-
-    .text-49 {
-      text-align: center;
-      font-family: var(--font-family-cossette-texte);
-      font-weight: normal;
-      font-size: 14.664006233215332px;
-      letter-spacing: -5%;
-      line-height: 20.301048278808594px;
-      text-decoration: none;
-      text-transform: none;
-      color: var(--text-rgb-23-22-22);
-    }
-
-    .group-563-50 {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .group-560-51 {
+      height: 60px;
+      background-color: var(--color-white);
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: flex-start;
+      padding-left: 30px;
     }
 
-    .tombol-info-saldo-52 {
-      background-color: rgba(255, 255, 255, 1);
-      border-radius: 7.332361698150635px;
-      padding: 15px 30px;
-      box-shadow: 0px 0px 4.399416446685791px 0px rgba(0,0,0,0.5);
-      cursor: pointer;
-      border: none;
-      flex: 1;
+    .top-bar img {
+      height: 50px;
+      width: auto;
     }
 
-    .text-54 {
-      text-align: center;
-      font-family: var(--font-family-cossette-texte);
-      font-weight: normal;
-      font-size: 10.998541831970215px;
-      letter-spacing: -5%;
-      line-height: 14.778769493103027px;
-      text-decoration: none;
-      text-transform: none;
-      color: var(--text-white);
-    }
-
-    .image-8-55 {
-      width: 24px;
-      height: 24px;
-    }
-
-    .text-56 {
-      text-align: center;
-      font-family: var(--font-family-cossette-texte);
-      font-weight: normal;
-      font-size: 12.46501350402832px;
-      letter-spacing: -5%;
-      line-height: 21.602161407470703px;
-      text-decoration: none;
-      text-transform: none;
-      color: var(--text-rgb-227-220-220);
-    }
-
-    .text-57 {
-      text-align: center;
-      font-family: var(--font-family-cossette-texte);
-      font-weight: normal;
-      font-size: 12.46501350402832px;
-      letter-spacing: -5%;
-      line-height: 21.602161407470703px;
-      text-decoration: none;
-      text-transform: none;
-      color: var(--text-rgb-0-229-50);
-    }
-
-    .text-58 {
-      text-align: center;
-      font-family: var(--font-family-cossette-texte);
-      font-weight: normal;
-      font-size: 14.66472339630127px;
-      letter-spacing: -5%;
-      line-height: 21.602161407470703px;
-      text-decoration: none;
-      text-transform: none;
-      color: var(--text-rgb-227-220-220);
-    }
-
-    .text-59 {
-      text-align: center;
-      font-family: var(--font-family-cossette-texte);
-      font-weight: normal;
-      font-size: 12.46501350402832px;
-      letter-spacing: -5%;
-      line-height: 21.602161407470703px;
-      text-decoration: none;
-      text-transform: none;
-      color: var(--text-rgb-227-220-220);
-    }
-
-    .text-60 {
-      text-align: center;
-      font-family: var(--font-family-cossette-texte);
-      font-weight: normal;
-      font-size: 14.66472339630127px;
-      letter-spacing: -5%;
-      line-height: 21.602161407470703px;
-      text-decoration: none;
-      text-transform: none;
-      color: var(--text-rgb-227-220-220);
-    }
-
-    .text-61 {
-      box-shadow: 0px 3.1123321056365967px 3.1123321056365967px 0px rgba(0,0,0,0.5);
-      text-align: left;
-      font-family: var(--font-family-koulen);
-      font-weight: normal;
-      font-size: 31.123319625854492px;
-      letter-spacing: -5%;
-      line-height: 14.9978666305542px;
-      text-decoration: none;
-      text-transform: none;
-      color: var(--text-white);
-    }
-
-    .container-63 {
-      background-color: rgba(255, 255, 255, 1);
-      border-radius: 7.332361698150635px;
-      padding: 15px;
-      border: none;
-    }
-
-    .tombol-info-saldo-62 {
-      background-color: rgba(255, 255, 255, 1);
-      border-radius: 7.332361698150635px;
-      padding: 15px;
-      box-shadow: 0px 0px 4.399416446685791px 0px rgba(0,0,0,0.5);
-      border: none;
-    }
-
-    .container-64 {
-      background-color: rgba(255, 255, 255, 1);
-      border-radius: 7.332361698150635px;
-      padding: 15px;
-      border: none;
-    }
-
-    .our-logo {
-      flex: 1;
+    .page-wrapper {
+      width: 100%;
+      min-height: calc(100vh - 60px);
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      padding: 40px 20px;
+      background-color: var(--color-navy);
     }
 
-    .logo-name-69 {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .vector-1-70 {
-      width: 60px;
-      height: 60px;
-    }
-
-    .text-71 {
-      text-align: left;
-      font-family: var(--font-family-koulen);
-      font-weight: normal;
-      font-size: 78.39328002929688px;
-      letter-spacing: -4%;
-      line-height: 62.714622497558594px;
-      text-decoration: none;
-      text-transform: none;
-      color: var(--text-white);
-    }
-
-    .caddle-72 {
-      display: flex;
-      gap: 5px;
-    }
-
-    .rectangle-771-73,
-    .rectangle-773-74,
-    .rectangle-772-75,
-    .rectangle-774-76,
-    .rectangle-775-77,
-    .rectangle-776-78 {
-      background-color: rgba(0, 34, 68, 1);
-      width: 10px;
-      height: 40px;
-    }
-
-    /* Form styling */
-    .login-form {
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background-color: var(--color-card);
+      border-radius: 20px;
+      padding: 50px 40px;
       display: flex;
       flex-direction: column;
       gap: 20px;
     }
 
-    .login-form input {
-      background-color: rgba(255, 255, 255, 1);
-      border-radius: 7.332361698150635px;
-      padding: 15px;
-      border: none;
-      font-family: var(--font-family-cossette-texte);
+    .login-title {
+      text-align: center;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--color-navy);
+      margin-bottom: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
       font-size: 14px;
-      color: rgba(23, 22, 22, 1);
+      color: var(--color-navy);
+      font-weight: 500;
     }
 
-    .login-form input::placeholder {
-      color: rgba(227, 220, 220, 1);
-    }
-
-    .login-form input:focus {
+    .form-group input {
+      width: 100%;
+      background-color: var(--color-white);
+      border: none;
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: var(--color-navy);
       outline: none;
     }
 
-    .google-link {
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .form-group input:focus {
+      box-shadow: 0 0 0 2px rgba(0, 34, 68, 0.15);
     }
 
-    .register-link {
+    .btn-submit {
+      align-self: center;
+      background-color: var(--color-white);
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 50px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .btn-submit:hover {
+      background-color: #fff;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 4px 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: var(--color-navy);
+      opacity: 0.6;
+    }
+
+    .divider span {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-navy);
+    }
+
+    .btn-google {
+      align-self: center;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background-color: var(--color-white);
+      color: var(--color-navy);
+      border: 1px solid rgba(0, 34, 68, 0.2);
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 13px;
+      cursor: pointer;
       text-decoration: none;
+    }
+
+    .btn-google img {
+      width: 18px;
+      height: 18px;
+    }
+
+    .register-text {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-navy);
+      margin-top: 4px;
+    }
+
+    .register-text a {
+      color: var(--color-green);
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 4px;
+    }
+
+    .register-text a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-<div class="login-43">
-  <div class="rectangle-793-44">
-    <p class="text-61"><span class="text-white">Selamat datang kembali</span></p>
-    
-    <form action="{{ route('login') }}" method="POST" class="login-form">
-      @csrf
-      <p class="text-58"><span class="text-rgb-227-220-220">Email</span></p>
-      <input type="email" name="email" placeholder="Masukkan email kamu" required>
-      
-      <p class="text-60"><span class="text-rgb-227-220-220">Password</span></p>
-      <input type="password" name="password" placeholder="Masukkan password kamu" required>
-      
-      <div class="group-555-45">
-        <button type="submit" class="tombol-info-saldo-46">
-          <p class="text-48"><span class="text-white">Masuk</span></p>
-        </button>
-      </div>
-    </form>
+  <div class="top-bar">
+    <img src="{{ asset('assets/logo.png') }}" alt="Nano Tracker Logo">
+  </div>
 
-    <p class="text-59"><span class="text-rgb-227-220-220">atau</span></p>
+  <div class="page-wrapper">
+    <div class="login-card">
+      <h1 class="login-title">LOGIN AKUN</h1>
 
-    <div class="group-563-50">
-      <a href="{{ route('login.google') }}" class="google-link">
-        <div class="group-560-51">
-          <button type="button" class="tombol-info-saldo-52">
-            <p class="text-54"><span class="text-white">Masuk dengan google</span></p>
-          </button>
-          <img src="{{ asset('assets/google-icon.png') }}" class="image-8-55" alt="Google" />
+      <form action="{{ route('login') }}" method="POST">
+        @csrf
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
         </div>
+
+        <div style="height: 16px;"></div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required>
+        </div>
+
+        <div style="display:flex; justify-content:center;">
+          <button type="submit" class="btn-submit">Masuk</button>
+        </div>
+      </form>
+
+      <div class="divider"><span>atau</span></div>
+
+      <a href="{{ route('login.google') }}" class="btn-google">
+        <img src="{{ asset('assets/google-icon.png') }}" alt="Google Icon">
+        Masuk dengan google
       </a>
-    </div>
 
-    <p class="text-56"><span class="text-rgb-227-220-220">Belum punya akun? </span></p>
-    <a href="{{ route('register') }}" class="register-link">
-      <p class="text-57"><span class="text-rgb-0-229-50">Daftar Sekarang</span></p>
-    </a>
-  </div>
-
-  <div class="our-logo">
-    <div class="logo-name-69">
-      <img src="{{ asset('assetss/auth-logo.png') }}" class="vector-1-70" alt="Logo" />
-      <p class="text-71">ANO TRACKER</p>
-    </div>
-    <div class="caddle-72">
-      <div class="rectangle-771-73"></div>
-      <div class="rectangle-773-74"></div>
-      <div class="rectangle-772-75"></div>
-      <div class="rectangle-774-76"></div>
-      <div class="rectangle-775-77"></div>
-      <div class="rectangle-776-78"></div>
+      <p class="register-text">
+        Belum punya akun? <a href="{{ route('register') }}">Daftar Sekarang</a>
+      </p>
     </div>
   </div>
-</div>
 </body>
 </html>
