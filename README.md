@@ -72,26 +72,11 @@ CREATE USER 'root'@'localhost' IDENTIFIED BY 'your_password';
 GRANT ALL PRIVILEGES ON nano_tracker_db.* TO 'root'@'localhost';
 FLUSH PRIVILEGES;
 
-CREATE TABLE users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    nama_depan VARCHAR(50),
-    nama_belakang VARCHAR(50),
-    username VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP NULL DEFAULT NULL,
-    updated_at TIMESTAMP NULL DEFAULT NULL
-);
-
 5. Update .env pakai your_password
 
 DB_DATABASE=nano_tracker_db
 DB_USERNAME=nano_user
 DB_PASSWORD=your_password
-
-GOOGLE_CLIENT_ID=986540485373-3736odn1pkh76nmkhmu8rug42s0o0o1o.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=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
-GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
 
 6. Run migrasi
 
