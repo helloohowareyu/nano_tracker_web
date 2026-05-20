@@ -9,6 +9,8 @@
             --color-navy: #002244;
             --color-white: #F8F9FA;
             --color-text-muted: #6B7280;
+            --color-expense: #D32F2F;
+            --color-income: #00E532;
         }
 
         * {
@@ -185,11 +187,199 @@
             flex: 1;
             background-color: var(--color-white);
             padding: 32px;
+            overflow-y: auto;
+        }
+
+        /* Charts Layout */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .chart-card {
+            background-color: #fff;
+            border: 2px solid var(--color-navy);
+            border-radius: 12px;
+            padding: 32px 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .chart-card-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--color-navy);
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chart-wrapper canvas {
+            max-height: 100%;
+            max-width: 100%;
+        }
+
+        .empty-chart-message {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-text-muted);
+            text-align: center;
+        }
+
+        .chart-legend {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 24px;
+            justify-items: start;
+            padding-left: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-navy);
+        }
+
+        .legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        /* Transaction List Styling (Same as transaksi page) */
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .transaction-group {
+            background-color: #fff;
+            border: 2px solid var(--color-navy);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .transaction-group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            background-color: var(--color-navy);
+            color: #fff;
+        }
+
+        .transaction-date {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .transaction-total {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .transaction-item {
+            display: grid;
+            grid-template-columns: 80px 160px 1fr auto;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #E5E7EB;
+            gap: 24px;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-time {
+            font-size: 15px;
+            color: var(--color-navy);
+            font-weight: 600;
+        }
+
+        .transaction-type {
+            font-size: 15px;
+            color: var(--color-navy);
+            font-weight: 500;
+        }
+
+        .transaction-desc {
+            font-size: 15px;
+            color: var(--color-navy);
+        }
+
+        .transaction-amount {
+            font-size: 15px;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .transaction-amount.expense {
+            color: var(--color-expense);
+        }
+
+        .transaction-amount.income {
+            color: var(--color-income);
+        }
+
+        @media (max-width: 1024px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+            .transaction-item {
+                grid-template-columns: 70px 120px 1fr auto;
+            }
         }
 
         @media (max-width: 900px) {
             .top-bar {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .transaction-item {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            
+            .transaction-time {
+                order: 1;
+            }
+            
+            .transaction-amount {
+                order: 2;
+                text-align: right;
+            }
+            
+            .transaction-type {
+                order: 3;
+            }
+            
+            .transaction-desc {
+                order: 4;
+                text-align: right;
             }
         }
 
@@ -277,8 +467,240 @@
         </header>
 
         <main class="content">
-            {{-- Konten dashboard di sini --}}
+            <!-- Charts Section -->
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3 class="chart-card-title">PENGELUARAN</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="pengeluaranChart"></canvas>
+                        <div id="pengeluaranEmpty" class="empty-chart-message" style="display: none;">
+                            Belum ada data pengeluaran
+                        </div>
+                    </div>
+                    <div class="chart-legend" id="pengeluaranLegend"></div>
+                </div>
+
+                <div class="chart-card">
+                    <h3 class="chart-card-title">PEMASUKKAN</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="pemasukanChart"></canvas>
+                        <div id="pemasukanEmpty" class="empty-chart-message" style="display: none;">
+                            Belum ada data pemasukan
+                        </div>
+                    </div>
+                    <div class="chart-legend" id="pemasukanLegend"></div>
+                </div>
+            </div>
+
+            <!-- Latest Transactions Section -->
+            <div class="transaction-list">
+                @forelse($groupedLatestTransaksis as $date => $transactions)
+                    @php
+                        $dailyTotal = 0;
+                        foreach($transactions as $t) {
+                            if($t->tipe == 'pemasukan') {
+                                $dailyTotal += $t->nominal;
+                            } else {
+                                $dailyTotal -= $t->nominal;
+                            }
+                        }
+                    @endphp
+                    <div class="transaction-group">
+                        <div class="transaction-group-header">
+                            <span class="transaction-date">{{ $date }}</span>
+                            <span class="transaction-total">Total Rp{{ number_format(abs($dailyTotal), 0, ',', '.') }}</span>
+                        </div>
+                        @foreach($transactions as $transaksi)
+                            <div class="transaction-item">
+                                <span class="transaction-time">{{ \Carbon\Carbon::parse($transaksi->tanggal_waktu)->format('H:i') }}</span>
+                                <span class="transaction-type">{{ $transaksi->kategori }}</span>
+                                <span class="transaction-desc">{{ $transaksi->catatan ?? '-' }}</span>
+                                <span class="transaction-amount {{ $transaksi->tipe == 'pengeluaran' ? 'expense' : 'income' }}">
+                                    Rp{{ number_format($transaksi->nominal, 0, ',', '.') }}
+                                </span>
+                            </div>
+                        @endforeach
+                    </div>
+                @empty
+                    <div style="text-align: center; padding: 40px; color: #6B7280; border: 2px solid var(--color-navy); border-radius: 12px; background: #fff;">
+                        Belum ada transaksi
+                    </div>
+                @endforelse
+            </div>
         </main>
     </div>
+
+    <!-- Load Chart.js and DataLabels Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    
+    <script>
+        // Define color palette matching user mock and general clean design
+        const colors = [
+            '#00E532', // Green (Judi / Menang Judi)
+            '#FFC107', // Yellow (Kos-kosan / Curian)
+            '#FF3B30', // Red (Makan)
+            '#2196F3', // Blue (Tagihan / Gaji)
+            '#AF52DE', // Purple
+            '#FF9500', // Orange
+            '#5AC8FA', // Light Blue
+            '#E91E63', // Pink
+            '#009688', // Teal
+            '#795548'  // Brown
+        ];
+
+        // Register the datalabels plugin globally
+        Chart.register(ChartDataLabels);
+
+        // Dynamic Legend Generator
+        function generateLegend(containerId, data, colors) {
+            const legendContainer = document.getElementById(containerId);
+            legendContainer.innerHTML = '';
+            
+            data.forEach((item, index) => {
+                const color = colors[index % colors.length];
+                
+                const legendItem = document.createElement('div');
+                legendItem.className = 'legend-item';
+                
+                const colorBox = document.createElement('span');
+                colorBox.className = 'legend-color';
+                colorBox.style.backgroundColor = color;
+                
+                const labelText = document.createElement('span');
+                labelText.textContent = item.kategori;
+                
+                legendItem.appendChild(colorBox);
+                legendItem.appendChild(labelText);
+                legendContainer.appendChild(legendItem);
+            });
+        }
+
+        // Fetch data encoded from Controller
+        const pengeluaranData = @json($pengeluaranKategori);
+        const pemasukanData = @json($pemasukanKategori);
+
+        // Render Pengeluaran (Expense) Chart
+        if (pengeluaranData.length === 0) {
+            document.getElementById('pengeluaranChart').style.display = 'none';
+            document.getElementById('pengeluaranEmpty').style.display = 'block';
+        } else {
+            const labels = pengeluaranData.map(item => item.kategori);
+            const totals = pengeluaranData.map(item => parseFloat(item.total));
+            
+            const ctx = document.getElementById('pengeluaranChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: totals,
+                        backgroundColor: colors.slice(0, labels.length)
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    let value = context.raw || 0;
+                                    return ' ' + label + ': Rp' + new Intl.NumberFormat('id-ID').format(value);
+                                }
+                            }
+                        },
+                        datalabels: {
+                            color: '#ffffff',
+                            font: {
+                                weight: 'bold',
+                                size: 12,
+                                family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+                            },
+                            formatter: (value, context) => {
+                                let sum = 0;
+                                let dataArr = context.chart.data.datasets[0].data;
+                                dataArr.map(data => {
+                                    sum += parseFloat(data);
+                                });
+                                let percentage = (value * 100 / sum).toFixed(1);
+                                if (percentage.endsWith('.0')) {
+                                    percentage = percentage.slice(0, -2);
+                                }
+                                return percentage.replace('.', ',') + '%';
+                            }
+                        }
+                    }
+                }
+            });
+            
+            generateLegend('pengeluaranLegend', pengeluaranData, colors);
+        }
+
+        // Render Pemasukan (Income) Chart
+        if (pemasukanData.length === 0) {
+            document.getElementById('pemasukanChart').style.display = 'none';
+            document.getElementById('pemasukanEmpty').style.display = 'block';
+        } else {
+            const labels = pemasukanData.map(item => item.kategori);
+            const totals = pemasukanData.map(item => parseFloat(item.total));
+            
+            const ctx = document.getElementById('pemasukanChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: totals,
+                        backgroundColor: colors.slice(0, labels.length)
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    let value = context.raw || 0;
+                                    return ' ' + label + ': Rp' + new Intl.NumberFormat('id-ID').format(value);
+                                }
+                            }
+                        },
+                        datalabels: {
+                            color: '#ffffff',
+                            font: {
+                                weight: 'bold',
+                                size: 12,
+                                family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+                            },
+                            formatter: (value, context) => {
+                                let sum = 0;
+                                let dataArr = context.chart.data.datasets[0].data;
+                                dataArr.map(data => {
+                                    sum += parseFloat(data);
+                                });
+                                let percentage = (value * 100 / sum).toFixed(1);
+                                if (percentage.endsWith('.0')) {
+                                    percentage = percentage.slice(0, -2);
+                                }
+                                return percentage.replace('.', ',') + '%';
+                            }
+                        }
+                    }
+                }
+            });
+            
+            generateLegend('pemasukanLegend', pemasukanData, colors);
+        }
+    </script>
 </body>
 </html>
