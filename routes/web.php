@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\PengaturanController;
 
 Route::get('/', [HomePageController::class, 'create'])->name('home_page');
 
@@ -34,3 +35,6 @@ Route::get('/test-db', function() {
 
 Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
 Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
+
+Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
+Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');

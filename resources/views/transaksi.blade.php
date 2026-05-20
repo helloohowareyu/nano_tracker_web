@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaksi</title>
+    <title>Transaksi - Nano Tracker</title>
     <style>
         :root {
             --color-navy: #002244;
@@ -34,6 +34,7 @@
             flex-direction: column;
             padding: 20px 0;
             flex-shrink: 0;
+            position: relative;
         }
 
         .sidebar-logo {
@@ -77,6 +78,7 @@
             flex-direction: column;
             gap: 8px;
             padding: 0 20px;
+            flex: 1;
         }
 
         .nav-item a {
@@ -98,6 +100,33 @@
         }
 
         .nav-item img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .nav-logout {
+            padding: 0 20px 20px;
+        }
+
+        .nav-logout a {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 12px 8px;
+            color: var(--color-white);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 700;
+            border-radius: 6px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-logout a:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-logout img {
             width: 24px;
             height: 24px;
             object-fit: contain;
@@ -158,11 +187,137 @@
         .content {
             flex: 1;
             background-color: var(--color-white);
-            padding: 32px;
+            padding: 24px 32px;
+            overflow-y: auto;
+        }
+
+        .content-header {
             display: flex;
+            justify-content: flex-end;
+            margin-bottom: 24px;
+        }
+
+        .btn-add {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background-color: var(--color-white);
+            border: 2px solid var(--color-navy);
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-navy);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-add:hover {
+            background-color: var(--color-navy);
+            color: var(--color-white);
+        }
+
+        .btn-add svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .transaction-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .transaction-group {
+            background-color: #fff;
+            border: 2px solid var(--color-navy);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .transaction-group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 24px;
+            background-color: var(--color-navy);
+            color: #fff;
+        }
+
+        .transaction-date {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .transaction-total {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .transaction-item {
+            display: grid;
+            grid-template-columns: 80px 160px 1fr auto;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #E5E7EB;
+            gap: 24px;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-time {
+            font-size: 15px;
+            color: var(--color-navy);
+            font-weight: 600;
+        }
+
+        .transaction-type {
+            font-size: 15px;
+            color: var(--color-navy);
+            font-weight: 500;
+        }
+
+        .transaction-desc {
+            font-size: 15px;
+            color: var(--color-navy);
+        }
+
+        .transaction-amount {
+            font-size: 15px;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .transaction-amount.expense {
+            color: var(--color-expense);
+        }
+
+        .transaction-amount.income {
+            color: var(--color-income);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
             justify-content: center;
             align-items: flex-start;
-            padding-top: 60px;
+            padding: 40px 20px;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active {
+            display: flex;
         }
 
         .modal-form {
@@ -172,6 +327,19 @@
             width: 100%;
             max-width: 420px;
             overflow: hidden;
+            animation: modalSlideIn 0.3s ease;
+            margin: auto;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-header {
@@ -196,6 +364,11 @@
             cursor: pointer;
             line-height: 1;
             padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-close:hover {
@@ -224,6 +397,7 @@
             border-radius: 25px;
             overflow: hidden;
             position: relative;
+            background-color: #fff;
         }
 
         .type-toggle input[type="radio"] {
@@ -241,18 +415,18 @@
             position: relative;
             z-index: 1;
             color: var(--color-navy);
+            border-radius: 20px;
+            margin: 2px;
         }
 
         .type-toggle input[value="pengeluaran"]:checked + label {
             background-color: var(--color-expense);
             color: #fff;
-            border-radius: 20px;
         }
 
         .type-toggle input[value="pemasukan"]:checked + label {
             background-color: var(--color-income);
             color: #fff;
-            border-radius: 20px;
         }
 
         .form-input {
@@ -342,9 +516,40 @@
             opacity: 0.9;
         }
 
+        @media (max-width: 1024px) {
+            .transaction-item {
+                grid-template-columns: 70px 120px 1fr auto;
+            }
+        }
+
         @media (max-width: 900px) {
             .top-bar {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .transaction-item {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            
+            .transaction-time {
+                order: 1;
+            }
+            
+            .transaction-amount {
+                order: 2;
+                text-align: right;
+            }
+            
+            .transaction-type {
+                order: 3;
+            }
+            
+            .transaction-desc {
+                order: 4;
+                text-align: right;
             }
         }
 
@@ -358,7 +563,6 @@
             }
             .content {
                 padding: 20px;
-                padding-top: 40px;
             }
         }
     </style>
@@ -370,7 +574,7 @@
         </div>
 
         <div class="profile">
-            <img src="{{ asset('assets/icon-profil.png') }}" alt="Foto Profil" class="profile-pic">
+            <img src="{{ auth()->user()->foto_profil ? asset('storage/' . auth()->user()->foto_profil) : asset('assets/icon-profil.png') }}" alt="Foto Profil" class="profile-pic">
             <div class="profile-name">Selamat Datang,<br>{{ auth()->user()->nama_lengkap }}</div>
         </div>
 
@@ -388,12 +592,26 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="">
+                <a href="{{ route('pengaturan') }}">
                     <img src="{{ asset('assets/settings.png') }}" alt="">
                     <span>Pengaturan</span>
                 </a>
             </li>
         </ul>
+
+        <div class="nav-logout">
+            <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+                @csrf
+                <button type="submit" style="background: none; border: none; color: var(--color-white); font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 16px; padding: 12px 8px; border-radius: 6px; transition: background-color 0.2s; width: 100%;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    <span>Logout</span>
+                </button>
+            </form>
+        </div>
     </aside>
 
     <div class="main-wrapper">
@@ -402,14 +620,14 @@
                 <img src="{{ asset('assets/Coin.png') }}" alt="" class="stat-icon">
                 <div class="stat-content">
                     <div class="stat-label">Pengeluaran</div>
-                    <div class="stat-value">Rp{{ number_format($pengeluaran->sum('nominal') ?? 0, 0, ',', '.') }}</div>
+                    <div class="stat-value">Rp{{ number_format($pengeluaran ?? 0, 0, ',', '.') }}</div>
                 </div>
             </div>
             <div class="stat-card">
                 <img src="{{ asset('assets/Coin - masuk.png') }}" alt="" class="stat-icon">
                 <div class="stat-content">
                     <div class="stat-label">Pemasukan</div>
-                    <div class="stat-value">Rp{{ number_format($pemasukan->sum('nominal') ?? 0, 0, ',', '.') }}</div>
+                    <div class="stat-value">Rp{{ number_format($pemasukan ?? 0, 0, ',', '.') }}</div>
                 </div>
             </div>
             <div class="stat-card">
@@ -422,50 +640,126 @@
         </header>
 
         <main class="content">
-            <div class="modal-form">
-                <div class="modal-header">
-                    <h3 class="modal-title">Tambah Transaksi</h3>
-                    <button type="button" class="modal-close">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('transaksi.store') }}" method="POST">
-                        @csrf
+            <div class="content-header">
+                <button type="button" class="btn-add" onclick="openModal()">
+                    Tambah Transaksi
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="16"/>
+                        <line x1="8" y1="12" x2="16" y2="12"/>
+                    </svg>
+                </button>
+            </div>
 
-                        <div class="form-group">
-                            <label class="form-label">Type</label>
-                            <div class="type-toggle">
-                                <input type="radio" name="tipe" id="pengeluaran" value="pengeluaran" checked>
-                                <label for="pengeluaran">Pengeluaran</label>
-                                <input type="radio" name="tipe" id="pemasukan" value="pemasukan">
-                                <label for="pemasukan">Pemasukan</label>
+            <div class="transaction-list">
+                @forelse($groupedTransaksis as $date => $transactions)
+                    @php
+                        $dailyTotal = 0;
+                        foreach($transactions as $t) {
+                            if($t->tipe == 'pemasukan') {
+                                $dailyTotal += $t->nominal;
+                            } else {
+                                $dailyTotal -= $t->nominal;
+                            }
+                        }
+                    @endphp
+                    <div class="transaction-group">
+                        <div class="transaction-group-header">
+                            <span class="transaction-date">{{ $date }}</span>
+                            <span class="transaction-total">Total Rp{{ number_format(abs($dailyTotal), 0, ',', '.') }}</span>
+                        </div>
+                        @foreach($transactions as $transaksi)
+                            <div class="transaction-item">
+                                <span class="transaction-time">{{ \Carbon\Carbon::parse($transaksi->tanggal_waktu)->format('H:i') }}</span>
+                                <span class="transaction-type">{{ $transaksi->kategori }}</span>
+                                <span class="transaction-desc">{{ $transaksi->catatan ?? '-' }}</span>
+                                <span class="transaction-amount {{ $transaksi->tipe == 'pengeluaran' ? 'expense' : 'income' }}">
+                                    Rp{{ number_format($transaksi->nominal, 0, ',', '.') }}
+                                </span>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="nominal">Nominal Transaksi</label>
-                            <input type="number" name="nominal" id="nominal" class="form-input" placeholder="Rp" step="0.01" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="kategori">Kategori</label>
-                            <input type="text" name="kategori" id="kategori" class="form-input neutral" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="tanggal_waktu">Tanggal dan Waktu</label>
-                            <input type="datetime-local" name="tanggal_waktu" id="tanggal_waktu" class="form-input neutral" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label" for="catatan">Catatan</label>
-                            <textarea name="catatan" id="catatan" class="form-textarea" placeholder="Catatan singkat detail transaksi"></textarea>
-                        </div>
-
-                        <button type="submit" class="btn-submit">Konfirmasi</button>
-                    </form>
-                </div>
+                        @endforeach
+                    </div>
+                @empty
+                    <div style="text-align: center; padding: 40px; color: #6B7280;">
+                        Belum ada transaksi
+                    </div>
+                @endforelse
             </div>
         </main>
     </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-form">
+            <div class="modal-header">
+                <h3 class="modal-title">Tambah Transaksi</h3>
+                <button type="button" class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('transaksi.store') }}" method="POST">
+                    @csrf
+                    
+                    <div class="form-group">
+                        <label class="form-label">Type</label>
+                        <div class="type-toggle">
+                            <input type="radio" name="tipe" id="pengeluaran" value="pengeluaran" checked>
+                            <label for="pengeluaran">Pengeluaran</label>
+                            <input type="radio" name="tipe" id="pemasukan" value="pemasukan">
+                            <label for="pemasukan">Pemasukan</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="nominal">Nominal Transaksi</label>
+                        <input type="number" name="nominal" id="nominal" class="form-input" placeholder="Rp" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="kategori">Kategori</label>
+                        <input type="text" name="kategori" id="kategori" class="form-input neutral" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Tanggal dan Waktu</label>
+                        <div class="datetime-row">
+                            <div class="input-with-icon">
+                                <input type="datetime-local" name="tanggal_waktu" id="tanggal_waktu" class="form-input neutral" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="catatan">Catatan</label>
+                        <textarea name="catatan" id="catatan" class="form-textarea" placeholder="Catatan singkat detail transaksi"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Konfirmasi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal() {
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('modalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>

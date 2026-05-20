@@ -9,11 +9,16 @@ class TransaksiController extends Controller
 {
     public function index()
     {
+        $pemasukan = Transaksi::where('tipe', 'pemasukan')->sum('nominal');
+        $pengeluaran = Transaksi::where('tipe', 'pengeluaran')->sum('nominal');
+        $total = $pemasukan - $pengeluaran;
+        $transaksis = Transaksi::orderBy('tanggal_waktu', 'desc')->get();
 
-        $pemasukan = DB::table('transaksis')->where('tipe', 'pemasukan')->get();
-        $pengeluaran = DB::table('transaksis')->where('tipe', 'pengeluaran')->get();
-        $total = $pemasukan->sum('nominal') - $pengeluaran->sum('nominal');
-        return view('transaksi', compact('pemasukan', 'pengeluaran', 'total'));
+        $groupedTransaksis = $transaksis->groupBy(function($item) {
+            return \Carbon\Carbon::parse($item->tanggal_waktu)->format('d-m-Y');
+        });
+
+        return view('transaksi', compact('pemasukan', 'pengeluaran', 'total', 'groupedTransaksis'));
     }
 
     public function store(Request $request)
@@ -34,6 +39,6 @@ class TransaksiController extends Controller
             'catatan' => $validated['catatan'] ?? null
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Transaksi berhasil disimpan!');
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan!');
     }
 }

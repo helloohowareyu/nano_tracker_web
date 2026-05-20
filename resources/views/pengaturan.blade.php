@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Nano Tracker</title>
+    <title>Pengaturan</title>
     <style>
         :root {
             --color-navy: #002244;
             --color-white: #F8F9FA;
             --color-text-muted: #6B7280;
+            --color-label: #5B7A99;
+            --color-teal: #2BA5B5;
+            --color-expense: #D32F2F;
+            --color-income: #00E532;
         }
 
         * {
@@ -24,6 +28,7 @@
             display: flex;
         }
 
+        /* Sidebar */
         .sidebar {
             width: 250px;
             min-height: 100vh;
@@ -32,6 +37,7 @@
             flex-direction: column;
             padding: 20px 0;
             flex-shrink: 0;
+            position: relative;
         }
 
         .sidebar-logo {
@@ -123,12 +129,12 @@
             background-color: rgba(255, 255, 255, 0.08);
         }
 
-        .nav-logout img {
+        .nav-logout svg {
             width: 24px;
             height: 24px;
-            object-fit: contain;
         }
 
+        /* Main Wrapper */
         .main-wrapper {
             flex: 1;
             display: flex;
@@ -136,6 +142,7 @@
             min-width: 0;
         }
 
+        /* Top Bar */
         .top-bar {
             background-color: var(--color-navy);
             padding: 20px 32px;
@@ -181,10 +188,130 @@
             margin-top: 2px;
         }
 
+        /* Content Area */
         .content {
             flex: 1;
             background-color: var(--color-white);
-            padding: 32px;
+            padding: 60px 80px;
+            overflow-y: auto;
+        }
+
+        /* Settings Layout */
+        .settings-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 80px;
+            max-width: 1000px;
+        }
+
+        /* Form Section */
+        .settings-form {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--color-label);
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--color-navy);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--color-navy);
+            outline: none;
+            transition: border-color 0.2s;
+            background-color: #fff;
+        }
+
+        .form-input:focus {
+            border-color: var(--color-teal);
+        }
+
+        .form-input::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        .btn-submit {
+            padding: 14px 48px;
+            background-color: var(--color-navy);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 16px;
+        }
+
+        .btn-submit:hover {
+            opacity: 0.9;
+        }
+
+        /* Profile Photo Section */
+        .profile-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-photo-large {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #E5E7EB;
+            background-color: #fff;
+        }
+
+        .change-photo-btn {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-teal);
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .change-photo-btn:hover {
+            opacity: 0.8;
+        }
+
+        /* Hidden file input */
+        .hidden-input {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .settings-container {
+                flex-direction: column-reverse;
+                align-items: center;
+                gap: 40px;
+            }
+
+            .settings-form {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .content {
+                padding: 40px;
+            }
         }
 
         @media (max-width: 900px) {
@@ -197,9 +324,23 @@
             body {
                 flex-direction: column;
             }
+
             .sidebar {
                 width: 100%;
                 min-height: auto;
+            }
+
+            .content {
+                padding: 24px;
+            }
+
+            .profile-photo-large {
+                width: 160px;
+                height: 160px;
+            }
+
+            .change-photo-btn {
+                font-size: 18px;
             }
         }
     </style>
@@ -211,12 +352,12 @@
         </div>
 
         <div class="profile">
-            <img src="{{ auth()->user()->foto_profil ? asset('storage/' . auth()->user()->foto_profil) : asset('assets/icon-profil.png') }}" alt="Foto Profil" class="profile-pic">
+                       <img src="{{ auth()->user()->foto_profil ? asset('storage/' . auth()->user()->foto_profil) : asset('assets/icon-profil.png') }}" alt="Foto Profil" class="profile-pic">
             <div class="profile-name">Selamat Datang,<br>{{ auth()->user()->nama_lengkap }}</div>
         </div>
 
         <ul class="nav-menu">
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a href="{{ route('dashboard') }}">
                     <img src="{{ asset('assets/layout-dashboard.png') }}" alt="">
                     <span>Dashboard</span>
@@ -228,7 +369,7 @@
                     <span>Transaksi</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a href="{{ route('pengaturan') }}">
                     <img src="{{ asset('assets/settings.png') }}" alt="">
                     <span>Pengaturan</span>
@@ -256,29 +397,102 @@
             <div class="stat-card">
                 <img src="{{ asset('assets/Coin.png') }}" alt="" class="stat-icon">
                 <div class="stat-content">
-                    <div class="stat-label">Pengeluaran</div>
+                     <div class="stat-label">Pengeluaran</div>
                     <div class="stat-value">Rp{{ number_format($pengeluaran ?? 0, 0, ',', '.') }}</div>
                 </div>
             </div>
             <div class="stat-card">
                 <img src="{{ asset('assets/Coin - masuk.png') }}" alt="" class="stat-icon">
                 <div class="stat-content">
-                    <div class="stat-label">Pemasukan</div>
+                   <div class="stat-label">Pemasukan</div>
                     <div class="stat-value">Rp{{ number_format($pemasukan ?? 0, 0, ',', '.') }}</div>
                 </div>
             </div>
             <div class="stat-card">
                 <img src="{{ asset('assets/saldo.png') }}" alt="" class="stat-icon">
                 <div class="stat-content">
-                    <div class="stat-label">Total Saldo</div>
+                   <div class="stat-label">Total Saldo</div>
                     <div class="stat-value">Rp{{ number_format($total ?? 0, 0, ',', '.') }}</div>
                 </div>
             </div>
         </header>
 
         <main class="content">
-            {{-- Konten dashboard di sini --}}
+            @if(session('error'))
+                <div style="background-color: #fee2e2; color: #dc2626; padding: 16px; border-radius: 8px; margin-bottom: 24px; border: 1px solid #fecaca;">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            @if(session('success'))
+                <div style="background-color: #dcfce7; color: #16a34a; padding: 16px; border-radius: 8px; margin-bottom: 24px; border: 1px solid #bbf7d0;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if($errors->any())
+                <div style="background-color: #fee2e2; color: #dc2626; padding: 16px; border-radius: 8px; margin-bottom: 24px; border: 1px solid #fecaca;">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <div class="settings-container">
+                <form action="{{ route('pengaturan.update') }}" method="POST" class="settings-form" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="form-group">
+                        <label class="form-label" for="nama_lengkap">Nama Lengkap</label>
+                        <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-input" value="{{ auth()->user()->nama_lengkap }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email</label>
+                        <input type="email" name="email" id="email" class="form-input" value="{{ auth()->user()->email }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">New password</label>
+                        <input type="password" name="password" id="password" class="form-input" placeholder="">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password_confirmation">Confirm password</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="form-input" placeholder="">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="foto_profil">Foto Profil</label>
+                        <input type="file" name="foto_profil" id="fotoProfilInput" class="form-input" accept="image/*">
+                        <input type="hidden" name="foto_profil_base64" id="fotoProfilBase64">
+                    </div>
+
+                    <button type="submit" class="btn-submit">Konfirmasi</button>
+                </form>
+
+                <div class="profile-section">
+                    <img src="{{ auth()->user()->foto_profil ? asset('storage/' . auth()->user()->foto_profil) : asset('assets/icon-profil.png') }}" alt="Foto Profil" class="profile-photo-large" id="profilePhotoPreview">
+                </div>
+            </div>
         </main>
     </div>
+
+    <script>
+        document.getElementById('fotoProfilInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePhotoPreview').src = e.target.result;
+                    document.getElementById('fotoProfilBase64').value = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 </html>
