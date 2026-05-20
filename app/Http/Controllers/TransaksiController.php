@@ -2,31 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Transaksi;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 class TransaksiController extends Controller
 {
-    public function simpan(Request $request)
+    public function index()
     {
-        // validasi
-        $request->validate([
-            'tipe' => 'required',
-            'nominal' => 'required|numeric',
-            'kategori' => 'required',
-            'waktu_transaksi' => 'required',
-            'catatan' => 'nullable'
+
+        $pemasukan = DB::table('transaksis')->where('tipe', 'pemasukan')->get();
+        $pengeluaran = DB::table('transaksis')->where('tipe', 'pengeluaran')->get();
+        $total = $pemasukan->sum('nominal') - $pengeluaran->sum('nominal');
+        return view('transaksi', compact('pemasukan', 'pengeluaran', 'total'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'tipe' => 'required|in:pemasukan,pengeluaran',
+            'nominal' => 'required|numeric|min:0',
+            'kategori' => 'required|string|max:30',
+            'tanggal_waktu' => 'required|date',
+            'catatan' => 'nullable|string|max:50'
         ]);
 
-        // simpan data
         Transaksi::create([
-            'tipe' => $request->tipe,
-            'nominal' => $request->nominal,
-            'kategori' => $request->kategori,
-            'waktu_transaksi' => $request->waktu_transaksi,
-            'catatan' => $request->catatan
+            'tipe' => $validated['tipe'],
+            'nominal' => $validated['nominal'],
+            'kategori' => $validated['kategori'],
+            'tanggal_waktu' => $validated['tanggal_waktu'],
+            'catatan' => $validated['catatan'] ?? null
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Data berhasil disimpan!');
+        return redirect()->route('dashboard')->with('success', 'Transaksi berhasil disimpan!');
     }
 }

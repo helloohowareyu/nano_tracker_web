@@ -6,11 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaksi extends Model
 {
+    protected $table = 'transaksis';
+
     protected $fillable = [
         'tipe',
         'nominal',
         'kategori',
-        'waktu_transaksi',
+        'tanggal_waktu',
         'catatan'
+    ];
+
+    protected $casts = [
+        'nominal' => 'decimal:2',
+        'tanggal_waktu' => 'datetime',
     ];
 }
