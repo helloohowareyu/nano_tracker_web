@@ -30,7 +30,7 @@ class PengaturanController extends Controller
             $validated = $request->validate([
                 'nama_lengkap' => 'required|string|max:50',
                 'email' => 'required|email|max:100|unique:users,email,' . $user->id,
-                'password' => 'nullable|string|min:6|confirmed',
+                'password' => 'nullable|string',
             ]);
 
             \Log::info('Validation passed', ['validated' => $validated]);
