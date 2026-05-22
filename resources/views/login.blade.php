@@ -199,8 +199,9 @@
         <div class="form-group">
           <label for="password">Password</label>
           <input type="password" id="password" name="password" required>
-        </div>
-
+          @error('password')
+            <div style="color:#d32f2f; font-size: 12px; margin-top: 6px;">{{ $message }}</div>
+          @enderror
         <div style="display:flex; justify-content:center;">
           <button type="submit" class="btn-submit">Masuk</button>
         </div>
