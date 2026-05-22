@@ -36,13 +36,13 @@ class DashboardController extends Controller
             ->get();
 
         // Get 5 latest transactions
-        $latestTransaksis = Transaksi::orderBy('tanggal_waktu', 'desc')
+        $latestTransaksis = Transaksi::orderBy('waktu_transaksi', 'desc')
             ->take(5)
             ->get();
 
         // Group the 5 latest transactions by date
         $groupedLatestTransaksis = $latestTransaksis->groupBy(function($item) {
-            return \Carbon\Carbon::parse($item->tanggal_waktu)->format('d-m-Y');
+            return \Carbon\Carbon::parse($item->waktu_transaksi)->format('d-m-Y');
         });
 
         return view('dashboard', compact(

@@ -670,7 +670,7 @@
                         </div>
                         @foreach($transactions as $transaksi)
                             <div class="transaction-item">
-                                <span class="transaction-time">{{ \Carbon\Carbon::parse($transaksi->tanggal_waktu)->format('H:i') }}</span>
+                                <span class="transaction-time">{{ \Carbon\Carbon::parse($transaksi->waktu_transaksi)->format('H:i') }}</span>
                                 <span class="transaction-type">{{ $transaksi->kategori }}</span>
                                 <span class="transaction-desc">{{ $transaksi->catatan ?? '-' }}</span>
                                 <span class="transaction-amount {{ $transaksi->tipe == 'pengeluaran' ? 'expense' : 'income' }}">
@@ -722,7 +722,7 @@
                         <label class="form-label">Tanggal dan Waktu</label>
                         <div class="datetime-row">
                             <div class="input-with-icon">
-                                <input type="datetime-local" name="tanggal_waktu" id="tanggal_waktu" class="form-input neutral" required>
+                                <input type="datetime-local" name="waktu_transaksi" id="waktu_transaksi" class="form-input neutral" required>
                             </div>
                         </div>
                     </div>

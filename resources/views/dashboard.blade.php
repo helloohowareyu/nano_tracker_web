@@ -512,7 +512,7 @@
                         </div>
                         @foreach($transactions as $transaksi)
                             <div class="transaction-item">
-                                <span class="transaction-time">{{ \Carbon\Carbon::parse($transaksi->tanggal_waktu)->format('H:i') }}</span>
+                                <span class="transaction-time">{{ \Carbon\Carbon::parse($transaksi->waktu_transaksi)->format('H:i') }}</span>
                                 <span class="transaction-type">{{ $transaksi->kategori }}</span>
                                 <span class="transaction-desc">{{ $transaksi->catatan ?? '-' }}</span>
                                 <span class="transaction-amount {{ $transaksi->tipe == 'pengeluaran' ? 'expense' : 'income' }}">
