@@ -12,10 +12,10 @@ class TransaksiController extends Controller
         $pemasukan = Transaksi::where('tipe', 'pemasukan')->sum('nominal');
         $pengeluaran = Transaksi::where('tipe', 'pengeluaran')->sum('nominal');
         $total = $pemasukan - $pengeluaran;
-        $transaksis = Transaksi::orderBy('tanggal_waktu', 'desc')->get();
+        $transaksis = Transaksi::orderBy('waktu_transaksi', 'desc')->get();
 
         $groupedTransaksis = $transaksis->groupBy(function($item) {
-            return \Carbon\Carbon::parse($item->tanggal_waktu)->format('d-m-Y');
+            return \Carbon\Carbon::parse($item->waktu_transaksi)->format('d-m-Y');
         });
 
         return view('transaksi', compact('pemasukan', 'pengeluaran', 'total', 'groupedTransaksis'));
@@ -27,7 +27,7 @@ class TransaksiController extends Controller
             'tipe' => 'required|in:pemasukan,pengeluaran',
             'nominal' => 'required|numeric|min:0',
             'kategori' => 'required|string|max:30',
-            'tanggal_waktu' => 'required|date',
+            'waktu_transaksi' => 'required|date',
             'catatan' => 'nullable|string|max:50'
         ]);
 
@@ -35,7 +35,7 @@ class TransaksiController extends Controller
             'tipe' => $validated['tipe'],
             'nominal' => $validated['nominal'],
             'kategori' => $validated['kategori'],
-            'tanggal_waktu' => $validated['tanggal_waktu'],
+            'waktu_transaksi' => $validated['waktu_transaksi'],
             'catatan' => $validated['catatan'] ?? null
         ]);
 

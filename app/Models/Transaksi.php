@@ -12,12 +12,12 @@ class Transaksi extends Model
         'tipe',
         'nominal',
         'kategori',
-        'tanggal_waktu',
+        'waktu_transaksi',
         'catatan'
     ];
 
     protected $casts = [
         'nominal' => 'decimal:2',
-        'tanggal_waktu' => 'datetime',
+        'waktu_transaksi' => 'datetime',
     ];
 }
