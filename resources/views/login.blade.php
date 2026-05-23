@@ -70,6 +70,20 @@
       letter-spacing: 0.5px;
     }
 
+    .alert {
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .alert-success {
+      background-color: #e6f4ea;
+      color: #1d6d3a;
+      border: 1px solid #b7d8bb;
+    }
+
     .form-group {
       display: flex;
       flex-direction: column;
@@ -185,6 +199,11 @@
   <div class="page-wrapper">
     <div class="login-card">
       <h1 class="login-title">LOGIN AKUN</h1>
+      @if(session('success'))
+      <div class="alert alert-success" style="background-color: #d4edda; color: #155724; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+          {{ session('success') }}
+      </div>
+      @endif
 
       <form action="{{ route('login') }}" method="POST">
         @csrf
