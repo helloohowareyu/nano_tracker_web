@@ -17,9 +17,18 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
+    Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
+
+    Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
+    Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
+    Route::delete('/pengaturan', [PengaturanController::class,'destroy'])->name('pengaturan.destroy');
+});
 
 Route::get('/login/google', [AuthenticatedSessionController::class, 'redirectToGoogle'])->name('login.google');
 Route::get('/auth/google/callback', [AuthenticatedSessionController::class, 'handleGoogleCallback']);
@@ -32,11 +41,3 @@ Route::get('/test-db', function() {
         return "koneksi gagal: " . $e->getMessage();
     }
 });
-
-Route::get('/transaksi', [TransaksiController::class, 'index'])->name('transaksi.index');
-Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaksi.store');
-
-Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
-Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
-
-Route::delete('/pengaturan', [PengaturanController::class,'destroy'])->name('pengaturan.destroy');

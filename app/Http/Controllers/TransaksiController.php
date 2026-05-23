@@ -9,10 +9,11 @@ class TransaksiController extends Controller
 {
     public function index()
     {
-        $pemasukan = Transaksi::where('tipe', 'pemasukan')->sum('nominal');
-        $pengeluaran = Transaksi::where('tipe', 'pengeluaran')->sum('nominal');
+        $userId = auth()->id();
+        $pemasukan = Transaksi::where('user_id', $userId)->where('tipe', 'pemasukan')->sum('nominal');
+        $pengeluaran = Transaksi::where('user_id', $userId)->where('tipe', 'pengeluaran')->sum('nominal');
         $total = $pemasukan - $pengeluaran;
-        $transaksis = Transaksi::orderBy('waktu_transaksi', 'desc')->get();
+        $transaksis = Transaksi::where('user_id', $userId)->orderBy('waktu_transaksi', 'desc')->get();
 
         $groupedTransaksis = $transaksis->groupBy(function($item) {
             return \Carbon\Carbon::parse($item->waktu_transaksi)->format('d-m-Y');
@@ -32,6 +33,7 @@ class TransaksiController extends Controller
         ]);
 
         Transaksi::create([
+            'user_id' => auth()->id(),
             'tipe' => $validated['tipe'],
             'nominal' => $validated['nominal'],
             'kategori' => $validated['kategori'],

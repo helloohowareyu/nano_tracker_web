@@ -17,26 +17,30 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $pemasukan = Transaksi::where('tipe', 'pemasukan')->sum('nominal');
-        $pengeluaran = Transaksi::where('tipe', 'pengeluaran')->sum('nominal');
+        $userId = auth()->id();
+        $pemasukan = Transaksi::where('user_id', $userId)->where('tipe', 'pemasukan')->sum('nominal');
+        $pengeluaran = Transaksi::where('user_id', $userId)->where('tipe', 'pengeluaran')->sum('nominal');
         $total = $pemasukan - $pengeluaran;
 
         // Get expense sum grouped by category
-        $pengeluaranKategori = Transaksi::where('tipe', 'pengeluaran')
+        $pengeluaranKategori = Transaksi::where('user_id', $userId)
+            ->where('tipe', 'pengeluaran')
             ->select('kategori', DB::raw('SUM(nominal) as total'))
             ->groupBy('kategori')
             ->orderBy('total', 'desc')
             ->get();
 
         // Get income sum grouped by category
-        $pemasukanKategori = Transaksi::where('tipe', 'pemasukan')
+        $pemasukanKategori = Transaksi::where('user_id', $userId)
+            ->where('tipe', 'pemasukan')
             ->select('kategori', DB::raw('SUM(nominal) as total'))
             ->groupBy('kategori')
             ->orderBy('total', 'desc')
             ->get();
 
         // Get 5 latest transactions
-        $latestTransaksis = Transaksi::orderBy('waktu_transaksi', 'desc')
+        $latestTransaksis = Transaksi::where('user_id', $userId)
+            ->orderBy('waktu_transaksi', 'desc')
             ->take(5)
             ->get();
 

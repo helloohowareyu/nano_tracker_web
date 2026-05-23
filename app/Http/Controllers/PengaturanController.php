@@ -9,8 +9,9 @@ class PengaturanController extends Controller
 {
     public function index()
     {
-        $pemasukan = \App\Models\Transaksi::where('tipe', 'pemasukan')->sum('nominal');
-        $pengeluaran = \App\Models\Transaksi::where('tipe', 'pengeluaran')->sum('nominal');
+        $userId = auth()->id();
+        $pemasukan = \App\Models\Transaksi::where('user_id', $userId)->where('tipe', 'pemasukan')->sum('nominal');
+        $pengeluaran = \App\Models\Transaksi::where('user_id', $userId)->where('tipe', 'pengeluaran')->sum('nominal');
         $total = $pemasukan - $pengeluaran;
 
         return view('pengaturan', compact('pemasukan', 'pengeluaran', 'total'));
@@ -89,6 +90,9 @@ class PengaturanController extends Controller
         if ($user->foto_profil) {
             \Storage::disk('public')->delete($user->foto_profil);
         }
+
+        // Hapus transaksi yang terkait dengan akun ini
+        $user->transaksis()->delete();
 
         // Menghapus data user dari database (permanen)
         $user->delete();
