@@ -38,3 +38,5 @@ Route::post('/transaksi', [TransaksiController::class, 'store'])->name('transaks
 
 Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
 Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
+
+Route::delete('/pengaturan', [PengaturanController::class,'destroy'])->name('pengaturan.destroy');

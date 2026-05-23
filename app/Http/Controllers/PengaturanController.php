@@ -52,14 +52,14 @@ class PengaturanController extends Controller
 
                     // Decode base64 dan simpan sebagai file
                     $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Data));
-                    
+
                     // Buat nama file unik berdasarkan user ID dan timestamp
                     $fileName = 'profile_' . $user->id . '_' . time() . '.png';
-                    
+
                     // Simpan file di storage/app/public/profiles
                     $filePath = 'profiles/' . $fileName;
                     \Storage::disk('public')->put($filePath, $imageData);
-                    
+
                     // Simpan path file ke database
                     $user->foto_profil = $filePath;
                     \Log::info('Profile photo saved as file', ['path' => $filePath]);
@@ -80,5 +80,27 @@ class PengaturanController extends Controller
             ]);
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
+    }
+
+    public function destroy(Request  $request) {
+        $user = auth()->user();
+
+        // Menghapus foto profil
+        if ($user->foto_profil) {
+            \Storage::disk('public')->delete($user->foto_profil);
+        }
+
+        // Menghapus data user dari database (permanen)
+        $user->delete();
+
+        // Keluar sesi
+        auth()->logout();
+
+        // Destroy sesi
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Kembali ke homepage
+        return redirect('/')->with('success', 'Akun Anda telah berhasil dihapus.');
     }
 }

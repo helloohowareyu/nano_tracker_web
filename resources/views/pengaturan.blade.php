@@ -343,6 +343,104 @@
                 font-size: 18px;
             }
         }
+
+        /* Gaya untuk tombol Hapus Akun Utama */
+        .btn-danger {
+            padding: 14px 48px;
+            background-color: var(--color-expense);
+            color: #fff;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 12px;
+            display: inline-block;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        /* Modal Overlay (Latar belakang gelap transparan) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Kotak Modal */
+        .modal-box {
+            background-color: #fff;
+            padding: 32px;
+            border-radius: 16px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 2px solid var(--color-navy);
+        }
+
+        .modal-title {
+            color: var(--color-navy);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .modal-text {
+            color: var(--color-text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        /* Tombol Batal */
+        .btn-cancel {
+            padding: 12px 24px;
+            background-color: #E5E7EB;
+            color: var(--color-navy);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background-color: #D1D5DB;
+        }
+
+        /* Tombol Konfirmasi Hapus */
+        .btn-confirm-delete {
+            padding: 12px 24px;
+            background-color: var(--color-expense);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-confirm-delete:hover {
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
@@ -472,6 +570,8 @@
                     </div>
 
                     <button type="submit" class="btn-submit">Konfirmasi</button>
+
+                    <button type="button" class="btn-danger" id="btnShowDeleteModal">Hapus Akun</button>
                 </form>
 
                 <div class="profile-section">
@@ -479,6 +579,22 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <div id="deleteAccountModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <h3 class="modal-title">Hapus Akun Permanen?</h3>
+            <p class="modal-text">Tindakan ini tidak dapat dibatalkan. Semua data transaksi Anda akan dihapus secara permanen.</p>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" id="btnCancelDelete">Batal</button>
+                <form action="{{ route('pengaturan.destroy') }}" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-confirm-delete">Ya, Hapus AKun</button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -491,6 +607,24 @@
                     document.getElementById('fotoProfilBase64').value = e.target.result;
                 };
                 reader.readAsDataURL(file);
+            }
+        });
+
+        const deleteModal = document.getElementById('deleteAccountModal');
+        const btnShowDelete = document.getElementById('btnShowDeleteModal');
+        const btnCancelDelete = document.getElementById('btnCancelDelete');
+
+        btnShowDelete.addEventListener('click', function(){
+            deleteModal.style.display = 'flex';
+        });
+
+        btnCancelDelete.addEventListener('click', function() {
+            deleteModal.style.display = 'none';
+        });
+
+        window.addEventListener('click', function(e) {
+            if (e.target === deleteModal) {
+                deleteModal.style.display = 'none';
             }
         });
     </script>
