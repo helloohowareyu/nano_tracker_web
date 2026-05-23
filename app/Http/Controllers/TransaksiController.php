@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 class TransaksiController extends Controller
 {
     public function index()
@@ -15,7 +16,7 @@ class TransaksiController extends Controller
         $total = $pemasukan - $pengeluaran;
         $transaksis = Transaksi::where('user_id', $userId)->orderBy('waktu_transaksi', 'desc')->get();
 
-        $groupedTransaksis = $transaksis->groupBy(function($item) {
+        $groupedTransaksis = $transaksis->groupBy(function ($item) {
             return \Carbon\Carbon::parse($item->waktu_transaksi)->format('d-m-Y');
         });
 
@@ -42,5 +43,32 @@ class TransaksiController extends Controller
         ]);
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil disimpan!');
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate(
+            [
+                'tipe' => 'required|in:pemasukan,pengeluaran',
+                'nominal' => 'required|numeric|min:0',
+                'kategori' => 'required|string|max:30',
+                'waktu_transaksi' => 'required|date',
+                'catatan' => 'nullable|string|max:50'
+            ]
+        );
+
+        $transaksi = Transaksi::where('user_id', auth()->id())->findOrFail($id);
+
+        $transaksi->update(
+            [
+                'tipe' => $validated['tipe'],
+                'nominal' => $validated['nominal'],
+                'kategori' => $validated['kategori'],
+                'waktu_transaksi' => $validated['waktu_transaksi'],
+                'catatan' => $validated['catatan'] ?? null
+            ]
+        );
+
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui!');
     }
 }

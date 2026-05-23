@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -336,6 +337,7 @@
                 opacity: 0;
                 transform: translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -419,12 +421,12 @@
             margin: 2px;
         }
 
-        .type-toggle input[value="pengeluaran"]:checked + label {
+        .type-toggle input[value="pengeluaran"]:checked+label {
             background-color: var(--color-expense);
             color: #fff;
         }
 
-        .type-toggle input[value="pemasukan"]:checked + label {
+        .type-toggle input[value="pemasukan"]:checked+label {
             background-color: var(--color-income);
             color: #fff;
         }
@@ -533,20 +535,20 @@
                 grid-template-columns: 1fr 1fr;
                 gap: 8px;
             }
-            
+
             .transaction-time {
                 order: 1;
             }
-            
+
             .transaction-amount {
                 order: 2;
                 text-align: right;
             }
-            
+
             .transaction-type {
                 order: 3;
             }
-            
+
             .transaction-desc {
                 order: 4;
                 text-align: right;
@@ -557,16 +559,19 @@
             body {
                 flex-direction: column;
             }
+
             .sidebar {
                 width: 100%;
                 min-height: auto;
             }
+
             .content {
                 padding: 20px;
             }
         }
     </style>
 </head>
+
 <body>
     <aside class="sidebar">
         <div class="sidebar-logo">
@@ -574,7 +579,8 @@
         </div>
 
         <div class="profile">
-            <img src="{{ auth()->user()->foto_profil ? asset('storage/' . auth()->user()->foto_profil) : asset('assets/icon-profil.png') }}" alt="Foto Profil" class="profile-pic">
+            <img src="{{ auth()->user()->foto_profil ? asset('storage/' . auth()->user()->foto_profil) : asset('assets/icon-profil.png') }}"
+                alt="Foto Profil" class="profile-pic">
             <div class="profile-name">Selamat Datang,<br>{{ auth()->user()->nama_lengkap }}</div>
         </div>
 
@@ -602,11 +608,14 @@
         <div class="nav-logout">
             <form action="{{ route('logout') }}" method="POST" style="display: inline;">
                 @csrf
-                <button type="submit" style="background: none; border: none; color: var(--color-white); font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 16px; padding: 12px 8px; border-radius: 6px; transition: background-color 0.2s; width: 100%;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
+                <button type="submit"
+                    style="background: none; border: none; color: var(--color-white); font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 16px; padding: 12px 8px; border-radius: 6px; transition: background-color 0.2s; width: 100%;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
                     </svg>
                     <span>Logout</span>
                 </button>
@@ -643,10 +652,12 @@
             <div class="content-header">
                 <button type="button" class="btn-add" onclick="openModal()">
                     Tambah Transaksi
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="8" x2="12" y2="16"/>
-                        <line x1="8" y1="12" x2="16" y2="12"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="8" x2="12" y2="16" />
+                        <line x1="8" y1="12" x2="16" y2="12" />
                     </svg>
                 </button>
             </div>
@@ -655,8 +666,8 @@
                 @forelse($groupedTransaksis as $date => $transactions)
                     @php
                         $dailyTotal = 0;
-                        foreach($transactions as $t) {
-                            if($t->tipe == 'pemasukan') {
+                        foreach ($transactions as $t) {
+                            if ($t->tipe == 'pemasukan') {
                                 $dailyTotal += $t->nominal;
                             } else {
                                 $dailyTotal -= $t->nominal;
@@ -666,17 +677,34 @@
                     <div class="transaction-group">
                         <div class="transaction-group-header">
                             <span class="transaction-date">{{ $date }}</span>
-                            <span class="transaction-total">Total Rp{{ number_format(abs($dailyTotal), 0, ',', '.') }}</span>
+                            <span class="transaction-total">Total
+                                Rp{{ number_format(abs($dailyTotal), 0, ',', '.') }}</span>
                         </div>
-                        @foreach($transactions as $transaksi)
+                        @foreach ($transactions as $transaksi)
                             <div class="transaction-item">
-                                <span class="transaction-time">{{ \Carbon\Carbon::parse($transaksi->waktu_transaksi)->format('H:i') }}</span>
+                                <span
+                                    class="transaction-time">{{ \Carbon\Carbon::parse($transaksi->waktu_transaksi)->format('H:i') }}</span>
                                 <span class="transaction-type">{{ $transaksi->kategori }}</span>
                                 <span class="transaction-desc">{{ $transaksi->catatan ?? '-' }}</span>
-                                <span class="transaction-amount {{ $transaksi->tipe == 'pengeluaran' ? 'expense' : 'income' }}">
-                                    Rp{{ number_format($transaksi->nominal, 0, ',', '.') }}
-                                </span>
-                            </div>
+                                <div style="display: flex; align-items: center; gap: 16px; justify-self: end;">
+                                    <span
+                                        class="transaction-amount {{ $transaksi->tipe == 'pengeluaran' ? 'expense' : 'income' }}">
+                                        Rp{{ number_format($transaksi->nominal, 0, ',', '.') }}
+                                    </span>
+                                    <button type="button"
+                                        onclick="openEditModal('{{ $transaksi->id }}', '{{ $transaksi->tipe }}', '{{ $transaksi->nominal }}', '{{ $transaksi->kategori }}', '{{ $transaksi->waktu_transaksi }}', '{{ $transaksi->catatan }}')"
+                                        style="background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+                                        padding: 6px; border-radius: 50%; color: var(--color-navy); transition: all 0.2s;"
+                                        onmouseover="this.style.backgroundColor='rgba(0, 34, 68, 0.08)'"
+                                        onmouseout="this.style.backgroundColor='transparent'" title="Edit Transaksi">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0  24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 20h9" />
+                                            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+                                        </svg>
+                                    </button>
+                                </div>
                         @endforeach
                     </div>
                 @empty
@@ -691,13 +719,13 @@
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-form">
             <div class="modal-header">
-                <h3 class="modal-title">Tambah Transaksi</h3>
+                <h3 class="modal-title" id="modalTitle">Tambah Transaksi</h3>
                 <button type="button" class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('transaksi.store') }}" method="POST">
+                <form id="transaksiForm" action="{{ route('transaksi.store') }}" method="POST">
                     @csrf
-                    
+                    <input type="hidden" name="_method" id="formMethod" value="POST">
                     <div class="form-group">
                         <label class="form-label">Type</label>
                         <div class="type-toggle">
@@ -710,7 +738,8 @@
 
                     <div class="form-group">
                         <label class="form-label" for="nominal">Nominal Transaksi</label>
-                        <input type="number" name="nominal" id="nominal" class="form-input" placeholder="Rp" required>
+                        <input type="number" name="nominal" id="nominal" class="form-input" placeholder="Rp"
+                            required>
                     </div>
 
                     <div class="form-group">
@@ -722,7 +751,8 @@
                         <label class="form-label">Tanggal dan Waktu</label>
                         <div class="datetime-row">
                             <div class="input-with-icon">
-                                <input type="datetime-local" name="waktu_transaksi" id="waktu_transaksi" class="form-input neutral" required>
+                                <input type="datetime-local" name="waktu_transaksi" id="waktu_transaksi"
+                                    class="form-input neutral" required>
                             </div>
                         </div>
                     </div>
@@ -740,6 +770,40 @@
 
     <script>
         function openModal() {
+            document.getElementById('modalTitle').innerText = 'Tambah Transaksi';
+
+            const form = document.getElementById('transaksiForm');
+            form.action = "{{ route('transaksi.store') }}";
+
+            document.getElementById('formMethod').value = 'POST';
+
+            form.reset();
+
+            document.getElementById('modalOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openEditModal(id, tipe, nominal, kategori, waktuTransaksi, catatan) {
+            document.getElementById('modalTitle').innerText = 'Edit Transaksi';
+            const form = document.getElementById('transaksiForm');
+            form.action = '/transaksi/' + id;
+
+            document.getElementById('formMethod').value = 'PUT';
+
+            document.getElementById('nominal').value = nominal;
+            document.getElementById('kategori').value = kategori;
+            document.getElementById('catatan').value = catatan || '';
+
+            const formattedDate = waktuTransaksi.replace(' ', 'T').substring(0, 16);
+
+            document.getElementById('waktu_transaksi').value = formattedDate;
+
+            if (tipe === 'pemasukan') {
+                document.getElementById('pemasukan').checked = true;
+            } else {
+                document.getElementById('pengeluaran').checked = true;
+            }
+
             document.getElementById('modalOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -762,4 +826,5 @@
         });
     </script>
 </body>
+
 </html>
