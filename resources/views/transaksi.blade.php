@@ -434,12 +434,30 @@
         .form-input {
             width: 100%;
             padding: 12px 16px;
-            border: 2px solid var(--color-expense);
+            border: 2px solid #E5E7EB;
             border-radius: 8px;
             font-size: 14px;
             color: var(--color-navy);
             outline: none;
             transition: border-color 0.2s;
+        }
+
+        .form-input.is-invalid {
+            border-color: var(--color-expense) !important;
+        }
+
+        .form-input:user-invalid {
+            border-color: var(--color-expense) !important;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
         }
 
         .form-input:focus {
@@ -738,22 +756,22 @@
 
                     <div class="form-group">
                         <label class="form-label" for="nominal">Nominal Transaksi</label>
-                        <input type="number" name="nominal" id="nominal" class="form-input" placeholder="Rp"
-                            required>
+                        <input type="number" name="nominal" id="nominal"
+                            class="form-input @error('nominal') is-invalid @enderror" placeholder="Rp" required>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label" for="kategori">Kategori</label>
-                        <input type="text" name="kategori" id="kategori" class="form-input neutral" required>
+                        <input type="text" name="kategori" id="kategori"
+                            class="form-input neutral @error('kategori') is-invalid @enderror" required>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Tanggal dan Waktu</label>
+                        <input type="hidden" name="waktu_transaksi" id="waktu_transaksi" required>
                         <div class="datetime-row">
-                            <div class="input-with-icon">
-                                <input type="datetime-local" name="waktu_transaksi" id="waktu_transaksi"
-                                    class="form-input neutral" required>
-                            </div>
+                            <input type="date" id="tanggal_transaksi" class="form-input neutral" required>
+                            <input type="time" id="jam_transaksi" class="form-input neutral" required>
                         </div>
                     </div>
 
@@ -779,6 +797,13 @@
 
             form.reset();
 
+            const now = new Date();
+            const todayDate = now.toISOString().slice(0, 10);
+            const currentTime = now.toTimeString().slice(0, 5);
+
+            document.getElementById('tanggal_transaksi').value = todayDate;
+            document.getElementById('jam_transaksi').value = currentTime;
+
             document.getElementById('modalOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
@@ -794,9 +819,13 @@
             document.getElementById('kategori').value = kategori;
             document.getElementById('catatan').value = catatan || '';
 
-            const formattedDate = waktuTransaksi.replace(' ', 'T').substring(0, 16);
+            const parts = waktuTransaksi.split(' ');
+            const datePart = parts[0];
 
-            document.getElementById('waktu_transaksi').value = formattedDate;
+            const timePart = parts[1] ? parts[1].substring(0, 5) : '00:00';
+
+            document.getElementById('tanggal_transaksi').value = datePart;
+            document.getElementById('jam_transaksi').value = timePart;
 
             if (tipe === 'pemasukan') {
                 document.getElementById('pemasukan').checked = true;
@@ -807,6 +836,13 @@
             document.getElementById('modalOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
+
+        document.getElementById('transaksiForm').addEventListener('submit', function(e) {
+            const tanggal = document.getElementById('tanggal_transaksi').value;
+            const jam = document.getElementById('jam_transaksi').value;
+
+            document.getElementById('waktu_transaksi').value = tanggal + ' ' + jam;
+        });
 
         function closeModal() {
             document.getElementById('modalOverlay').classList.remove('active');
