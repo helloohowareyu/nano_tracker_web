@@ -107,4 +107,99 @@ class PengaturanController extends Controller
         // Kembali ke homepage
         return redirect('/')->with('success', 'Akun Anda telah berhasil dihapus.');
     }
+
+    public function updatePreferensi(Request $request)
+    {
+        $user = auth()->user();
+
+        $validated = $request->validate([
+            'mata_uang' => 'required|string|in:Rp,$,€,¥',
+            'mode_tampilan' => 'required|string|in:light,dark',
+        ]);
+
+        try {
+            $user->mata_uang = $validated['mata_uang'];
+            $user->mode_tampilan = $validated['mode_tampilan'];
+            $user->save();
+
+            return redirect()->route('pengaturan')->with('success', 'Preferensi aplikasi berhasil diperbarui!');
+        } catch (\Exception $e) {
+            \Log::error('Error update preferensi: ' . $e->getMessage());
+            return back()->with('error', 'Gagal memperbarui preferensi: ' . $e->getMessage());
+        }
+    }
+
+    public function resetData()
+    {
+        $user = auth()->user();
+
+        try {
+            $user->transaksis()->delete();
+            return redirect()->route('pengaturan')->with('success', 'Semua data transaksi Anda telah berhasil direset!');
+        } catch (\Exception $e) {
+            \Log::error('Error reset data: ' . $e->getMessage());
+            return back()->with('error', 'Gagal mereset data: ' . $e->getMessage());
+        }
+    }
+
+    public function eksporData()
+    {
+        $user = auth()->user();
+        $transaksis = $user->transaksis()->orderBy('waktu_transaksi', 'desc')->get();
+
+        $filename = 'riwayat_transaksi_' . strtolower(str_replace(' ', '_', $user->nama_lengkap)) . '_' . date('Ymd_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv; charset=utf-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0'
+        ];
+
+        $callback = function() use ($transaksis) {
+            $file = fopen('php://output', 'w');
+            
+            // Tambahkan UTF-8 BOM untuk MS Excel agar membaca encoding dengan benar
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+
+            // Judul kolom CSV
+            fputcsv($file, ['No', 'Tanggal', 'Waktu', 'Nama Transaksi', 'Tipe', 'Kategori', 'Nominal', 'Catatan']);
+
+            $no = 1;
+            foreach ($transaksis as $t) {
+                // Formatting data
+                $tanggal = \Carbon\Carbon::parse($t->waktu_transaksi)->translatedFormat('d-m-Y');
+                $waktu = \Carbon\Carbon::parse($t->waktu_transaksi)->format('H:i');
+                
+                fputcsv($file, [
+                    $no++,
+                    $tanggal,
+                    $waktu,
+                    $t->nama_transaksi,
+                    ucfirst($t->tipe),
+                    ucfirst($t->kategori),
+                    $t->nominal,
+                    $t->catatan ?: '-'
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function hapusFoto()
+    {
+        $user = auth()->user();
+
+        if ($user->foto_profil) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($user->foto_profil);
+            $user->foto_profil = null;
+            $user->save();
+        }
+
+        return redirect()->route('pengaturan')->with('success', 'Foto profil berhasil dihapus!');
+    }
 }

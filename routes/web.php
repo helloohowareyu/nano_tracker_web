@@ -30,6 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengaturan', [PengaturanController::class, 'index'])->name('pengaturan');
     Route::put('/pengaturan', [PengaturanController::class, 'update'])->name('pengaturan.update');
     Route::delete('/pengaturan', [PengaturanController::class,'destroy'])->name('pengaturan.destroy');
+    Route::post('/pengaturan/preferensi', [PengaturanController::class, 'updatePreferensi'])->name('pengaturan.preferensi');
+    Route::post('/pengaturan/reset', [PengaturanController::class, 'resetData'])->name('pengaturan.reset');
+    Route::get('/pengaturan/ekspor', [PengaturanController::class, 'eksporData'])->name('pengaturan.ekspor');
+    Route::post('/pengaturan/hapus-foto', [PengaturanController::class, 'hapusFoto'])->name('pengaturan.hapus_foto');
 });
 
 Route::get('/login/google', [AuthenticatedSessionController::class, 'redirectToGoogle'])->name('login.google');

@@ -415,10 +415,144 @@
                 min-height: auto;
             }
         }
+
+        .nav-item img,
+        .nav-logout img {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+
+        body.dark-mode .main-wrapper {
+            background-color: #0d1117;
+        }
+
+        body.dark-mode .content {
+            background-color: #0d1117;
+        }
+
+        body.dark-mode .sidebar {
+            background-color: #161b22;
+            border-right: 1px solid #30363d;
+        }
+
+        body.dark-mode .stat-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .stat-icon {
+            filter: brightness(0) invert(1);
+        }
+
+        body.dark-mode .stat-label {
+            color: #8b949e;
+        }
+
+        body.dark-mode .stat-value {
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .chart-card,
+        body.dark-mode .transaction-card,
+        body.dark-mode .settings-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .chart-card-title,
+        body.dark-mode .transaction-card-title,
+        body.dark-mode .settings-card-title {
+            color: #f0f6fc;
+            border-bottom: 2px solid #30363d;
+        }
+
+        body.dark-mode .transaction-group-header {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
+        }
+
+        body.dark-mode .transaction-date {
+            color: #8b949e;
+        }
+
+        body.dark-mode .transaction-total {
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .transaction-item {
+            background-color: #161b22;
+            border: 1px solid #21262d;
+            color: #c9d1d9;
+        }
+
+        body.dark-mode .transaction-title {
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .transaction-desc {
+            color: #8b949e;
+        }
+
+        body.dark-mode .transaction-time {
+            color: #8b949e;
+        }
+
+        body.dark-mode .info-row {
+            border-bottom: 1px solid #21262d;
+        }
+
+        body.dark-mode .info-value {
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .form-label {
+            color: #c9d1d9;
+        }
+
+        body.dark-mode .form-input {
+            background-color: #0d1117;
+            border-color: #30363d;
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .form-input:focus {
+            border-color: var(--color-teal);
+        }
+
+        body.dark-mode .modal-box {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            color: #c9d1d9;
+        }
+
+        body.dark-mode .modal-title {
+            color: #f0f6fc;
+            border-bottom-color: #30363d;
+        }
+
+        body.dark-mode .modal-text {
+            color: #8b949e;
+        }
+
+        body.dark-mode .profile-name-large {
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .profile-badge-active {
+            background-color: #0e4429;
+            color: #3fb950;
+        }
     </style>
 </head>
 
-<body>
+<body class="{{ auth()->user()->mode_tampilan === 'dark' ? 'dark-mode' : '' }}">
     <aside class="sidebar">
         <div class="sidebar-logo">
             <img src="{{ asset('assets/main_logo.png') }}" alt="Nano Tracker Logo">
@@ -426,7 +560,7 @@
 
         <div class="profile">
             <img src="{{ auth()->user()->foto_profil ? asset('storage/' . auth()->user()->foto_profil) : asset('assets/icon-profil.png') }}"
-                alt="Foto Profil" class="profile-pic">
+                alt="Foto Profil" class="profile-pic" onerror="this.onerror=null; this.src='{{ asset('assets/icon-profil.png') }}';">
             <div class="profile-name">Selamat Datang,<br>{{ auth()->user()->nama_lengkap }}</div>
         </div>
 
@@ -475,21 +609,21 @@
                 <img src="{{ asset('assets/Coin.png') }}" alt="" class="stat-icon">
                 <div class="stat-content">
                     <div class="stat-label">Pengeluaran</div>
-                    <div class="stat-value">Rp{{ number_format($pengeluaran ?? 0, 0, ',', '.') }}</div>
+                    <div class="stat-value">{{ auth()->user()->formatUang($pengeluaran ?? 0) }}</div>
                 </div>
             </div>
             <div class="stat-card">
                 <img src="{{ asset('assets/Coin - masuk.png') }}" alt="" class="stat-icon">
                 <div class="stat-content">
                     <div class="stat-label">Pemasukan</div>
-                    <div class="stat-value">Rp{{ number_format($pemasukan ?? 0, 0, ',', '.') }}</div>
+                    <div class="stat-value">{{ auth()->user()->formatUang($pemasukan ?? 0) }}</div>
                 </div>
             </div>
             <div class="stat-card">
                 <img src="{{ asset('assets/saldo.png') }}" alt="" class="stat-icon">
                 <div class="stat-content">
                     <div class="stat-label">Total Saldo</div>
-                    <div class="stat-value">Rp{{ number_format($total ?? 0, 0, ',', '.') }}</div>
+                    <div class="stat-value">{{ auth()->user()->formatUang($total ?? 0) }}</div>
                 </div>
             </div>
         </header>
@@ -538,7 +672,7 @@
                             <span
                                 class="transaction-date">{{ \Carbon\Carbon::createFromFormat('d-m-Y', $date)->locale('id')->translatedFormat('l, d-m-Y') }}</span>
                             <span class="transaction-total">Total
-                                Rp{{ number_format(abs($dailyTotal), 0, ',', '.') }}</span>
+                                {{ auth()->user()->formatUang(abs($dailyTotal)) }}</span>
                         </div>
                         @foreach ($transactions as $transaksi)
                             <div class="transaction-item">
@@ -551,7 +685,7 @@
                                 <span class="transaction-desc">{{ $transaksi->catatan ?? '-' }}</span>
                                 <span
                                     class="transaction-amount {{ $transaksi->tipe == 'pengeluaran' ? 'expense' : 'income' }}">
-                                    Rp{{ number_format($transaksi->nominal, 0, ',', '.') }}
+                                    {{ auth()->user()->formatUang($transaksi->nominal) }}
                                 </span>
                             </div>
                         @endforeach
@@ -570,6 +704,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
     <script>
+        const userCurrency = "{{ auth()->user()->mata_uang ?? 'Rp' }}";
         const colors = [
             '#00E532',
             '#FFC107',
@@ -640,7 +775,8 @@
                                 label: function(context) {
                                     let label = context.label || '';
                                     let value = context.raw || 0;
-                                    return ' ' + label + ': Rp' + new Intl.NumberFormat('id-ID').format(value);
+                                    let formattedVal = new Intl.NumberFormat(userCurrency === 'Rp' ? 'id-ID' : 'en-US').format(value);
+                                    return ' ' + label + ': ' + userCurrency + formattedVal;
                                 }
                             }
                         },
@@ -700,7 +836,8 @@
                                 label: function(context) {
                                     let label = context.label || '';
                                     let value = context.raw || 0;
-                                    return ' ' + label + ': Rp' + new Intl.NumberFormat('id-ID').format(value);
+                                    let formattedVal = new Intl.NumberFormat(userCurrency === 'Rp' ? 'id-ID' : 'en-US').format(value);
+                                    return ' ' + label + ': ' + userCurrency + formattedVal;
                                 }
                             }
                         },
@@ -731,6 +868,15 @@
             generateLegend('pemasukanLegend', pemasukanData, colors);
         }
     </script>
+
+    @if(auth()->user()->mode_tampilan === 'dark')
+        <div style="position: fixed; bottom: 20px; right: 20px; background: rgba(255, 149, 0, 0.15); border: 1px solid #FF9500; color: #FF9500; padding: 8px 16px; border-radius: 30px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); z-index: 9999; backdrop-filter: blur(4px);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            Beta: Mode Gelap dalam pengembangan
+        </div>
+    @endif
 </body>
 
 </html>

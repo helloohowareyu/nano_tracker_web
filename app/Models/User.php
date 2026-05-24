@@ -24,6 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'foto_profil',
+        'mata_uang',
+        'mode_tampilan',
     ];
 
     /**
@@ -51,5 +53,13 @@ class User extends Authenticatable
 
     public function transaksis(){
         return $this->hasMany(Transaksi::class, 'user_id');
+    }
+
+    public function formatUang($nominal) {
+        $symbol = $this->mata_uang ?: 'Rp';
+        if ($symbol === 'Rp') {
+            return 'Rp' . number_format($nominal, 0, ',', '.');
+        }
+        return $symbol . number_format($nominal, 0, '.', ',');
     }
 }

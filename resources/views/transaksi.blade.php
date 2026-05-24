@@ -741,10 +741,244 @@
                 padding: 20px;
             }
         }
+
+        .nav-item img,
+        .nav-logout img {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+
+        body.dark-mode .main-wrapper {
+            background-color: #0d1117;
+        }
+
+        body.dark-mode .content {
+            background-color: #0d1117;
+        }
+
+        body.dark-mode .sidebar {
+            background-color: #161b22;
+            border-right: 1px solid #30363d;
+        }
+
+        body.dark-mode .stat-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .stat-icon {
+            filter: brightness(0) invert(1);
+        }
+
+        body.dark-mode .stat-label {
+            color: #8b949e;
+        }
+
+        body.dark-mode .stat-value {
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .chart-card,
+        body.dark-mode .transaction-card,
+        body.dark-mode .settings-card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .chart-card-title,
+        body.dark-mode .transaction-card-title,
+        body.dark-mode .settings-card-title {
+            color: #f0f6fc;
+            border-bottom: 2px solid #30363d;
+        }
+
+        body.dark-mode .transaction-group {
+            background-color: #161b22 !important;
+            border-color: #30363d !important;
+        }
+
+        body.dark-mode .transaction-group-header {
+            background-color: #0d1117;
+            border-bottom: 1px solid #30363d;
+        }
+
+        body.dark-mode .transaction-date {
+            color: #8b949e;
+        }
+
+        body.dark-mode .transaction-total {
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .transaction-item {
+            background-color: #161b22;
+            border-bottom: 1px solid #21262d;
+            color: #c9d1d9;
+        }
+
+        body.dark-mode .transaction-title {
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .transaction-desc {
+            color: #8b949e;
+        }
+
+        body.dark-mode .transaction-time {
+            color: #8b949e;
+        }
+
+        body.dark-mode .transaction-badge {
+            background-color: rgba(255, 255, 255, 0.08);
+            color: #c9d1d9;
+        }
+
+        body.dark-mode .form-label {
+            color: #c9d1d9;
+        }
+
+        body.dark-mode .form-input {
+            background-color: #0d1117;
+            border-color: #30363d;
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .form-input:focus {
+            border-color: var(--color-teal);
+        }
+
+        body.dark-mode .modal-form,
+        body.dark-mode .delete-modal-box,
+        body.dark-mode .modal-box {
+            background-color: #161b22 !important;
+            border: 1px solid #30363d !important;
+            color: #c9d1d9 !important;
+        }
+
+        body.dark-mode .modal-header {
+            background-color: #0d1117;
+            border-bottom: 1px solid #30363d;
+        }
+
+        body.dark-mode .modal-title {
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .modal-text,
+        body.dark-mode .delete-modal-text {
+            color: #8b949e;
+        }
+
+        body.dark-mode .delete-modal-title {
+            color: #f0f6fc;
+        }
+
+        body.dark-mode #tanggal_transaksi {
+            background-color: #0d1117 !important;
+            color: #f0f6fc !important;
+            border-color: #30363d !important;
+        }
+
+        body.dark-mode .time-box {
+            background-color: #0d1117 !important;
+            color: #f0f6fc !important;
+            border-color: #30363d !important;
+        }
+
+        body.dark-mode .time-separator {
+            color: #c9d1d9 !important;
+        }
+
+        body.dark-mode .type-toggle {
+            background-color: #0d1117 !important;
+            border-color: #30363d !important;
+        }
+
+        body.dark-mode .type-toggle label {
+            color: #8b949e !important;
+        }
+
+        body.dark-mode .type-toggle input[value="pengeluaran"]:checked+label {
+            background-color: var(--color-expense) !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .type-toggle input[value="pemasukan"]:checked+label {
+            background-color: var(--color-income) !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .btn-cancel {
+            background-color: #21262d;
+            color: #c9d1d9;
+        }
+
+        body.dark-mode .btn-cancel:hover {
+            background-color: #30363d;
+        }
+
+        /* Custom Flatpickr Styling in Dark Mode */
+        body.dark-mode .flatpickr-calendar {
+            background-color: #161b22 !important;
+            border: 2px solid #30363d !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
+        }
+
+        body.dark-mode .flatpickr-calendar .flatpickr-day {
+            color: #c9d1d9 !important;
+        }
+
+        body.dark-mode .flatpickr-calendar .flatpickr-day:hover,
+        body.dark-mode .flatpickr-calendar .flatpickr-day:focus {
+            background-color: #21262d !important;
+        }
+
+        body.dark-mode .flatpickr-calendar .flatpickr-day.selected {
+            background-color: var(--color-teal) !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .flatpickr-calendar .flatpickr-day.flatpickr-disabled,
+        body.dark-mode .flatpickr-calendar .flatpickr-day.flatpickr-disabled:hover {
+            color: #30363d !important;
+        }
+
+        body.dark-mode .flatpickr-calendar .flatpickr-months .flatpickr-month {
+            background-color: #0d1117 !important;
+            color: #f0f6fc !important;
+        }
+
+        body.dark-mode .flatpickr-calendar .flatpickr-current-month .flatpickr-monthDropdown-months,
+        body.dark-mode .flatpickr-calendar .flatpickr-weekdays,
+        body.dark-mode .flatpickr-calendar span.flatpickr-weekday {
+            background-color: #0d1117 !important;
+            color: #8b949e !important;
+        }
+
+        body.dark-mode .flatpickr-day.prevMonthDay,
+        body.dark-mode .flatpickr-day.nextMonthDay {
+            color: #555 !important;
+        }
+
+        body.dark-mode .profile-name-large {
+            color: #f0f6fc;
+        }
+
+        body.dark-mode .profile-badge-active {
+            background-color: #0e4429;
+            color: #3fb950;
+        }
     </style>
 </head>
 
-<body>
+<body class="{{ auth()->user()->mode_tampilan === 'dark' ? 'dark-mode' : '' }}">
     <aside class="sidebar">
         <div class="sidebar-logo">
             <img src="{{ asset('assets/main_logo.png') }}" alt="Nano Tracker Logo">
@@ -752,7 +986,8 @@
 
         <div class="profile">
             <img src="{{ auth()->user()->foto_profil ? asset('storage/' . auth()->user()->foto_profil) : asset('assets/icon-profil.png') }}"
-                alt="Foto Profil" class="profile-pic">
+                alt="Foto Profil" class="profile-pic"
+                onerror="this.onerror=null; this.src='{{ asset('assets/icon-profil.png') }}';">
             <div class="profile-name">Selamat Datang,<br>{{ auth()->user()->nama_lengkap }}</div>
         </div>
 
@@ -801,21 +1036,21 @@
                 <img src="{{ asset('assets/Coin.png') }}" alt="" class="stat-icon">
                 <div class="stat-content">
                     <div class="stat-label">Pengeluaran</div>
-                    <div class="stat-value">Rp{{ number_format($pengeluaran ?? 0, 0, ',', '.') }}</div>
+                    <div class="stat-value">{{ auth()->user()->formatUang($pengeluaran ?? 0) }}</div>
                 </div>
             </div>
             <div class="stat-card">
                 <img src="{{ asset('assets/Coin - masuk.png') }}" alt="" class="stat-icon">
                 <div class="stat-content">
                     <div class="stat-label">Pemasukan</div>
-                    <div class="stat-value">Rp{{ number_format($pemasukan ?? 0, 0, ',', '.') }}</div>
+                    <div class="stat-value">{{ auth()->user()->formatUang($pemasukan ?? 0) }}</div>
                 </div>
             </div>
             <div class="stat-card">
                 <img src="{{ asset('assets/saldo.png') }}" alt="" class="stat-icon">
                 <div class="stat-content">
                     <div class="stat-label">Total Saldo</div>
-                    <div class="stat-value">Rp{{ number_format($total ?? 0, 0, ',', '.') }}</div>
+                    <div class="stat-value">{{ auth()->user()->formatUang($total ?? 0) }}</div>
                 </div>
             </div>
         </header>
@@ -851,7 +1086,7 @@
                             <span
                                 class="transaction-date">{{ \Carbon\Carbon::createFromFormat('d-m-Y', $date)->locale('id')->translatedFormat('l, d-m-Y') }}</span>
                             <span class="transaction-total">Total
-                                Rp{{ number_format(abs($dailyTotal), 0, ',', '.') }}</span>
+                                {{ auth()->user()->formatUang(abs($dailyTotal)) }}</span>
                         </div>
                         @foreach ($transactions as $transaksi)
                             <div class="transaction-item">
@@ -865,7 +1100,7 @@
                                 <div style="display: flex; align-items: center; gap: 16px; justify-self: end;">
                                     <span
                                         class="transaction-amount {{ $transaksi->tipe == 'pengeluaran' ? 'expense' : 'income' }}">
-                                        Rp{{ number_format($transaksi->nominal, 0, ',', '.') }}
+                                        {{ auth()->user()->formatUang($transaksi->nominal) }}
                                     </span>
                                     <button type="button"
                                         onclick="openEditModal('{{ $transaksi->id }}', '{{ addslashes($transaksi->nama_transaksi) }}', '{{ $transaksi->tipe }}', '{{ $transaksi->nominal }}', '{{ $transaksi->kategori }}', '{{ $transaksi->waktu_transaksi }}', '{{ $transaksi->catatan }}')"
@@ -939,7 +1174,8 @@
                     <div class="form-group">
                         <label class="form-label" for="nominal">Nominal Transaksi</label>
                         <input type="number" name="nominal" id="nominal"
-                            class="form-input @error('nominal') is-invalid @enderror" placeholder="Rp" required>
+                            class="form-input @error('nominal') is-invalid @enderror"
+                            placeholder="{{ auth()->user()->mata_uang ?? 'Rp' }}" required>
                     </div>
 
                     <div class="form-group">
@@ -1186,6 +1422,18 @@
             }
         });
     </script>
+
+    @if (auth()->user()->mode_tampilan === 'dark')
+        <div
+            style="position: fixed; bottom: 20px; right: 20px; background: rgba(255, 149, 0, 0.15); border: 1px solid #FF9500; color: #FF9500; padding: 8px 16px; border-radius: 30px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); z-index: 9999; backdrop-filter: blur(4px);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            Beta: Mode Gelap dalam pengembangan
+        </div>
+    @endif
 </body>
 
 </html>
