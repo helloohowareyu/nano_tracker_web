@@ -26,6 +26,7 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'nama_transaksi' => 'required|string|max:50',
             'tipe' => 'required|in:pemasukan,pengeluaran',
             'nominal' => 'required|numeric|min:0',
             'kategori' => 'required|string|max:30',
@@ -35,6 +36,7 @@ class TransaksiController extends Controller
 
         Transaksi::create([
             'user_id' => auth()->id(),
+            'nama_transaksi' => $validated['nama_transaksi'],
             'tipe' => $validated['tipe'],
             'nominal' => $validated['nominal'],
             'kategori' => $validated['kategori'],
@@ -49,6 +51,7 @@ class TransaksiController extends Controller
     {
         $validated = $request->validate(
             [
+                'nama_transaksi' => 'required|string|max:50',
                 'tipe' => 'required|in:pemasukan,pengeluaran',
                 'nominal' => 'required|numeric|min:0',
                 'kategori' => 'required|string|max:30',
@@ -61,6 +64,7 @@ class TransaksiController extends Controller
 
         $transaksi->update(
             [
+                'nama_transaksi' => $validated['nama_transaksi'],
                 'tipe' => $validated['tipe'],
                 'nominal' => $validated['nominal'],
                 'kategori' => $validated['kategori'],
@@ -70,5 +74,13 @@ class TransaksiController extends Controller
         );
 
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        $transaksi = Transaksi::where('user_id', auth()->id())->findOrFail($id);
+        $transaksi->delete();
+
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus!');
     }
 }

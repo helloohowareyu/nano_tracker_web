@@ -265,7 +265,6 @@
             flex-shrink: 0;
         }
 
-        /* Transaction List Styling (Same as transaksi page) */
         .transaction-list {
             display: flex;
             flex-direction: column;
@@ -302,7 +301,7 @@
 
         .transaction-item {
             display: grid;
-            grid-template-columns: 80px 160px 1fr auto;
+            grid-template-columns: 80px 280px 1fr auto;
             align-items: center;
             padding: 20px 24px;
             border-bottom: 1px solid #E5E7EB;
@@ -319,10 +318,31 @@
             font-weight: 600;
         }
 
-        .transaction-type {
+        .transaction-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .transaction-title {
             font-size: 15px;
             color: var(--color-navy);
-            font-weight: 500;
+            font-weight: 600;
+            width: 120px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .transaction-badge {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-navy);
+            background-color: rgba(0, 34, 68, 0.08);
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: capitalize;
         }
 
         .transaction-desc {
@@ -515,7 +535,8 @@
                     @endphp
                     <div class="transaction-group">
                         <div class="transaction-group-header">
-                            <span class="transaction-date">{{ $date }}</span>
+                            <span
+                                class="transaction-date">{{ \Carbon\Carbon::createFromFormat('d-m-Y', $date)->locale('id')->translatedFormat('l, d-m-Y') }}</span>
                             <span class="transaction-total">Total
                                 Rp{{ number_format(abs($dailyTotal), 0, ',', '.') }}</span>
                         </div>
@@ -523,7 +544,10 @@
                             <div class="transaction-item">
                                 <span
                                     class="transaction-time">{{ \Carbon\Carbon::parse($transaksi->waktu_transaksi)->format('H:i') }}</span>
-                                <span class="transaction-type">{{ $transaksi->kategori }}</span>
+                                <div class="transaction-info">
+                                    <span class="transaction-title">{{ $transaksi->nama_transaksi }}</span>
+                                    <span class="transaction-badge">{{ $transaksi->kategori }}</span>
+                                </div>
                                 <span class="transaction-desc">{{ $transaksi->catatan ?? '-' }}</span>
                                 <span
                                     class="transaction-amount {{ $transaksi->tipe == 'pengeluaran' ? 'expense' : 'income' }}">
@@ -542,29 +566,25 @@
         </main>
     </div>
 
-    <!-- Load Chart.js and DataLabels Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
     <script>
-        // Define color palette matching user mock and general clean design
         const colors = [
-            '#00E532', // Green (Judi / Menang Judi)
-            '#FFC107', // Yellow (Kos-kosan / Curian)
-            '#FF3B30', // Red (Makan)
-            '#2196F3', // Blue (Tagihan / Gaji)
-            '#AF52DE', // Purple
-            '#FF9500', // Orange
-            '#5AC8FA', // Light Blue
-            '#E91E63', // Pink
-            '#009688', // Teal
-            '#795548' // Brown
+            '#00E532',
+            '#FFC107',
+            '#FF3B30',
+            '#2196F3',
+            '#AF52DE',
+            '#FF9500',
+            '#5AC8FA',
+            '#E91E63',
+            '#009688',
+            '#795548'
         ];
 
-        // Register the datalabels plugin globally
         Chart.register(ChartDataLabels);
 
-        // Dynamic Legend Generator
         function generateLegend(containerId, data, colors) {
             const legendContainer = document.getElementById(containerId);
             legendContainer.innerHTML = '';
@@ -588,11 +608,9 @@
             });
         }
 
-        // Fetch data encoded from Controller
         const pengeluaranData = @json($pengeluaranKategori);
         const pemasukanData = @json($pemasukanKategori);
 
-        // Render Pengeluaran (Expense) Chart
         if (pengeluaranData.length === 0) {
             document.getElementById('pengeluaranChart').style.display = 'none';
             document.getElementById('pengeluaranEmpty').style.display = 'block';
@@ -653,7 +671,6 @@
             generateLegend('pengeluaranLegend', pengeluaranData, colors);
         }
 
-        // Render Pemasukan (Income) Chart
         if (pemasukanData.length === 0) {
             document.getElementById('pemasukanChart').style.display = 'none';
             document.getElementById('pemasukanEmpty').style.display = 'block';

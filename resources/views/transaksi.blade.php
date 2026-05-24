@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transaksi - Nano Tracker</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <style>
         :root {
             --color-navy: #002244;
@@ -259,7 +261,7 @@
 
         .transaction-item {
             display: grid;
-            grid-template-columns: 80px 160px 1fr auto;
+            grid-template-columns: 80px 280px 1fr auto;
             align-items: center;
             padding: 20px 24px;
             border-bottom: 1px solid #E5E7EB;
@@ -276,10 +278,31 @@
             font-weight: 600;
         }
 
-        .transaction-type {
+        .transaction-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .transaction-title {
             font-size: 15px;
             color: var(--color-navy);
-            font-weight: 500;
+            font-weight: 600;
+            width: 120px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .transaction-badge {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--color-navy);
+            background-color: rgba(0, 34, 68, 0.08);
+            padding: 3px 10px;
+            border-radius: 20px;
+            text-transform: capitalize;
         }
 
         .transaction-desc {
@@ -299,6 +322,61 @@
 
         .transaction-amount.income {
             color: var(--color-income);
+        }
+
+        .time-input-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .time-box {
+            text-align: center !important;
+            flex: 1;
+            padding: 12px 8px !important;
+        }
+
+        .time-separator {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-navy);
+            user-select: none;
+        }
+
+        /* Custom Flatpickr Styling */
+        .flatpickr-calendar {
+            border: 2px solid var(--color-navy) !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+            font-family: inherit !important;
+        }
+
+        .flatpickr-day.selected,
+        .flatpickr-day.selected:focus,
+        .flatpickr-day.selected:hover {
+            background: var(--color-navy) !important;
+            border-color: var(--color-navy) !important;
+        }
+
+        .flatpickr-months .flatpickr-month {
+            background: var(--color-navy) !important;
+            color: #fff !important;
+            border-top-left-radius: 10px !important;
+            border-top-right-radius: 10px !important;
+        }
+
+        .flatpickr-current-month .flatpickr-monthDropdown-months {
+            background: var(--color-navy) !important;
+        }
+
+        .flatpickr-weekdays {
+            background: var(--color-navy) !important;
+        }
+
+        span.flatpickr-weekday {
+            background: var(--color-navy) !important;
+            color: #fff !important;
         }
 
         .modal-overlay {
@@ -379,6 +457,69 @@
 
         .modal-body {
             padding: 24px;
+        }
+
+        .delete-modal-box {
+            background-color: #fff;
+            padding: 32px;
+            border-radius: 16px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 2px solid var(--color-navy);
+            animation: modalSlideIn 0.3s ease;
+            margin: auto;
+        }
+
+        .delete-modal-title {
+            color: var(--color-navy);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .delete-modal-text {
+            color: var(--color-text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .delete-modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .btn-cancel {
+            padding: 12px 24px;
+            background-color: #E5E7EB;
+            color: var(--color-navy);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-cancel:hover {
+            background-color: #D1D5DB;
+        }
+
+        .btn-confirm-delete {
+            padding: 12px 24px;
+            background-color: var(--color-expense);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-confirm-delete:hover {
+            opacity: 0.9;
         }
 
         .form-group {
@@ -694,7 +835,8 @@
                     @endphp
                     <div class="transaction-group">
                         <div class="transaction-group-header">
-                            <span class="transaction-date">{{ $date }}</span>
+                            <span
+                                class="transaction-date">{{ \Carbon\Carbon::createFromFormat('d-m-Y', $date)->locale('id')->translatedFormat('l, d-m-Y') }}</span>
                             <span class="transaction-total">Total
                                 Rp{{ number_format(abs($dailyTotal), 0, ',', '.') }}</span>
                         </div>
@@ -702,7 +844,10 @@
                             <div class="transaction-item">
                                 <span
                                     class="transaction-time">{{ \Carbon\Carbon::parse($transaksi->waktu_transaksi)->format('H:i') }}</span>
-                                <span class="transaction-type">{{ $transaksi->kategori }}</span>
+                                <div class="transaction-info">
+                                    <span class="transaction-title">{{ $transaksi->nama_transaksi }}</span>
+                                    <span class="transaction-badge">{{ $transaksi->kategori }}</span>
+                                </div>
                                 <span class="transaction-desc">{{ $transaksi->catatan ?? '-' }}</span>
                                 <div style="display: flex; align-items: center; gap: 16px; justify-self: end;">
                                     <span
@@ -710,19 +855,33 @@
                                         Rp{{ number_format($transaksi->nominal, 0, ',', '.') }}
                                     </span>
                                     <button type="button"
-                                        onclick="openEditModal('{{ $transaksi->id }}', '{{ $transaksi->tipe }}', '{{ $transaksi->nominal }}', '{{ $transaksi->kategori }}', '{{ $transaksi->waktu_transaksi }}', '{{ $transaksi->catatan }}')"
+                                        onclick="openEditModal('{{ $transaksi->id }}', '{{ addslashes($transaksi->nama_transaksi) }}', '{{ $transaksi->tipe }}', '{{ $transaksi->nominal }}', '{{ $transaksi->kategori }}', '{{ $transaksi->waktu_transaksi }}', '{{ $transaksi->catatan }}')"
                                         style="background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
                                         padding: 6px; border-radius: 50%; color: var(--color-navy); transition: all 0.2s;"
                                         onmouseover="this.style.backgroundColor='rgba(0, 34, 68, 0.08)'"
                                         onmouseout="this.style.backgroundColor='transparent'" title="Edit Transaksi">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            viewBox="0 0  24 24" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                             <path d="M12 20h9" />
                                             <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
                                         </svg>
                                     </button>
+                                    <button type="button" onclick="confirmDelete('{{ $transaksi->id }}')"
+                                        style="background: none; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+                                        padding: 6px; border-radius: 50%; color: var(--color-expense); transition: all 0.2s;"
+                                        onmouseover="this.style.backgroundColor='rgba(211, 47, 47, 0.08)'"
+                                        onmouseout="this.style.backgroundColor='transparent'" title="Hapus Transaksi">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M3 6h18" />
+                                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                                        </svg>
+                                    </button>
                                 </div>
+                            </div>
                         @endforeach
                     </div>
                 @empty
@@ -745,7 +904,14 @@
                     @csrf
                     <input type="hidden" name="_method" id="formMethod" value="POST">
                     <div class="form-group">
-                        <label class="form-label">Type</label>
+                        <label class="form-label" for="nama_transaksi">Nama Transaksi</label>
+                        <input type="text" name="nama_transaksi" id="nama_transaksi"
+                            class="form-input neutral @error('nama_transaksi') is-invalid @enderror"
+                            placeholder="Contoh: Beli Kopi, Gaji Bulanan" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Jenis Transaksi</label>
                         <div class="type-toggle">
                             <input type="radio" name="tipe" id="pengeluaran" value="pengeluaran" checked>
                             <label for="pengeluaran">Pengeluaran</label>
@@ -770,8 +936,15 @@
                         <label class="form-label">Tanggal dan Waktu</label>
                         <input type="hidden" name="waktu_transaksi" id="waktu_transaksi" required>
                         <div class="datetime-row">
-                            <input type="date" id="tanggal_transaksi" class="form-input neutral" required>
-                            <input type="time" id="jam_transaksi" class="form-input neutral" required>
+                            <input type="text" id="tanggal_transaksi" class="form-input neutral"
+                                placeholder="Pilih Tanggal" required style="background-color: #fff;">
+                            <div class="time-input-container">
+                                <input type="text" id="jam_transaksi_hour" class="form-input neutral time-box"
+                                    placeholder="HH" maxlength="2" required>
+                                <span class="time-separator">:</span>
+                                <input type="text" id="jam_transaksi_minute" class="form-input neutral time-box"
+                                    placeholder="MM" maxlength="2" required>
+                            </div>
                         </div>
                     </div>
 
@@ -786,7 +959,29 @@
         </div>
     </div>
 
+    <div id="deleteTransactionModal" class="modal-overlay">
+        <div class="delete-modal-box">
+            <h3 class="delete-modal-title">Hapus Transaksi?</h3>
+            <p class="delete-modal-text">Yakin ingin menghapus transaksi ini? Data yang dihapus tidak dapat
+                dikembalikan.</p>
+
+            <div class="delete-modal-actions">
+                <button type="button" class="btn-cancel" onclick="closeDeleteModal()">Batal</button>
+                <form id="deleteTransactionForm" action="" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-confirm-delete">Ya, Hapus Transaksi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
+        const tanggalPicker = flatpickr("#tanggal_transaksi", {
+            dateFormat: "d-m-Y",
+            allowInput: true
+        });
+
         function openModal() {
             document.getElementById('modalTitle').innerText = 'Tambah Transaksi';
 
@@ -798,23 +993,25 @@
             form.reset();
 
             const now = new Date();
-            const todayDate = now.toISOString().slice(0, 10);
-            const currentTime = now.toTimeString().slice(0, 5);
+            const currentHour = String(now.getHours()).padStart(2, '0');
+            const currentMinute = String(now.getMinutes()).padStart(2, '0');
 
-            document.getElementById('tanggal_transaksi').value = todayDate;
-            document.getElementById('jam_transaksi').value = currentTime;
+            tanggalPicker.setDate(now);
+            document.getElementById('jam_transaksi_hour').value = currentHour;
+            document.getElementById('jam_transaksi_minute').value = currentMinute;
 
             document.getElementById('modalOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        function openEditModal(id, tipe, nominal, kategori, waktuTransaksi, catatan) {
+        function openEditModal(id, namaTransaksi, tipe, nominal, kategori, waktuTransaksi, catatan) {
             document.getElementById('modalTitle').innerText = 'Edit Transaksi';
             const form = document.getElementById('transaksiForm');
             form.action = '/transaksi/' + id;
 
             document.getElementById('formMethod').value = 'PUT';
 
+            document.getElementById('nama_transaksi').value = namaTransaksi;
             document.getElementById('nominal').value = nominal;
             document.getElementById('kategori').value = kategori;
             document.getElementById('catatan').value = catatan || '';
@@ -823,9 +1020,13 @@
             const datePart = parts[0];
 
             const timePart = parts[1] ? parts[1].substring(0, 5) : '00:00';
+            const timeParts = timePart.split(':');
+            const hourPart = timeParts[0] || '00';
+            const minutePart = timeParts[1] || '00';
 
-            document.getElementById('tanggal_transaksi').value = datePart;
-            document.getElementById('jam_transaksi').value = timePart;
+            tanggalPicker.setDate(datePart);
+            document.getElementById('jam_transaksi_hour').value = hourPart;
+            document.getElementById('jam_transaksi_minute').value = minutePart;
 
             if (tipe === 'pemasukan') {
                 document.getElementById('pemasukan').checked = true;
@@ -838,10 +1039,53 @@
         }
 
         document.getElementById('transaksiForm').addEventListener('submit', function(e) {
-            const tanggal = document.getElementById('tanggal_transaksi').value;
-            const jam = document.getElementById('jam_transaksi').value;
+            const selectedDate = tanggalPicker.selectedDates[0] || new Date();
+            const yyyy = selectedDate.getFullYear();
+            const mm = String(selectedDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(selectedDate.getDate()).padStart(2, '0');
+            const tanggal = `${yyyy}-${mm}-${dd}`;
+
+            const hour = document.getElementById('jam_transaksi_hour').value.padStart(2, '0');
+            const minute = document.getElementById('jam_transaksi_minute').value.padStart(2, '0');
+            const jam = hour + ':' + minute;
 
             document.getElementById('waktu_transaksi').value = tanggal + ' ' + jam;
+        });
+
+        // Event listener auto-tabbing & validasi input jam-menit
+        document.getElementById('jam_transaksi_hour').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) value = value.slice(0, 2);
+
+            // Validasi agar angka jam tidak lebih dari 23
+            if (value.length === 2 && parseInt(value) > 23) {
+                value = '23';
+            }
+            e.target.value = value;
+
+            // Auto fokus ke kolom menit jika sudah diisi 2 angka
+            if (value.length === 2) {
+                document.getElementById('jam_transaksi_minute').focus();
+                document.getElementById('jam_transaksi_minute').select();
+            }
+        });
+
+        document.getElementById('jam_transaksi_minute').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) value = value.slice(0, 2);
+
+            // Validasi agar angka menit tidak lebih dari 59
+            if (value.length === 2 && parseInt(value) > 59) {
+                value = '59';
+            }
+            e.target.value = value;
+        });
+
+        document.getElementById('jam_transaksi_minute').addEventListener('keydown', function(e) {
+            // Kembali fokus ke kolom jam jika menekan Backspace di kolom menit yang kosong
+            if (e.key === 'Backspace' && e.target.value.length === 0) {
+                document.getElementById('jam_transaksi_hour').focus();
+            }
         });
 
         function closeModal() {
@@ -858,6 +1102,25 @@
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeModal();
+                closeDeleteModal();
+            }
+        });
+
+        function confirmDelete(id) {
+            const form = document.getElementById('deleteTransactionForm');
+            form.action = '/transaksi/' + id;
+            document.getElementById('deleteTransactionModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteTransactionModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('deleteTransactionModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDeleteModal();
             }
         });
     </script>
