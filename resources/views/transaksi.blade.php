@@ -919,11 +919,11 @@
                     <div class="form-group">
                         <label class="form-label" for="nama_transaksi">
                             Nama Transaksi
-                            <span class="char-counter" id="nama_transaksi_counter">0/50</span>
+                            <span class="char-counter" id="nama_transaksi_counter">0/25</span>
                         </label>
                         <input type="text" name="nama_transaksi" id="nama_transaksi"
                             class="form-input neutral @error('nama_transaksi') is-invalid @enderror"
-                            placeholder="Contoh: Beli Kopi, Gaji Bulanan" maxlength="50" required>
+                            placeholder="Contoh: Beli Kopi, Gaji Bulanan" maxlength="25" required>
                     </div>
 
                     <div class="form-group">
@@ -945,10 +945,11 @@
                     <div class="form-group">
                         <label class="form-label" for="kategori">
                             Kategori
-                            <span class="char-counter" id="kategori_counter">0/30</span>
+                            <span class="char-counter" id="kategori_counter">0/25</span>
                         </label>
                         <input type="text" name="kategori" id="kategori"
-                            class="form-input neutral @error('kategori') is-invalid @enderror" maxlength="30" required>
+                            class="form-input neutral @error('kategori') is-invalid @enderror" maxlength="25"
+                            required>
                     </div>
 
                     <div class="form-group">
@@ -972,7 +973,8 @@
                             Catatan
                             <span class="char-counter" id="catatan_counter">0/50</span>
                         </label>
-                        <textarea name="catatan" id="catatan" class="form-textarea" placeholder="Catatan singkat detail transaksi" maxlength="50"></textarea>
+                        <textarea name="catatan" id="catatan" class="form-textarea" placeholder="Catatan singkat detail transaksi"
+                            maxlength="50"></textarea>
                     </div>
 
                     <button type="submit" class="btn-submit">Konfirmasi</button>
@@ -1019,10 +1021,10 @@
         }
 
         document.getElementById('nama_transaksi').addEventListener('input', function() {
-            updateCounter('nama_transaksi', 'nama_transaksi_counter', 50);
+            updateCounter('nama_transaksi', 'nama_transaksi_counter', 25);
         });
         document.getElementById('kategori').addEventListener('input', function() {
-            updateCounter('kategori', 'kategori_counter', 30);
+            updateCounter('kategori', 'kategori_counter', 25);
         });
         document.getElementById('catatan').addEventListener('input', function() {
             updateCounter('catatan', 'catatan_counter', 50);
@@ -1046,8 +1048,8 @@
             document.getElementById('jam_transaksi_hour').value = currentHour;
             document.getElementById('jam_transaksi_minute').value = currentMinute;
 
-            updateCounter('nama_transaksi', 'nama_transaksi_counter', 50);
-            updateCounter('kategori', 'kategori_counter', 30);
+            updateCounter('nama_transaksi', 'nama_transaksi_counter', 25);
+            updateCounter('kategori', 'kategori_counter', 25);
             updateCounter('catatan', 'catatan_counter', 50);
 
             document.getElementById('modalOverlay').classList.add('active');
@@ -1090,8 +1092,8 @@
                 document.getElementById('pengeluaran').checked = true;
             }
 
-            updateCounter('nama_transaksi', 'nama_transaksi_counter', 50);
-            updateCounter('kategori', 'kategori_counter', 30);
+            updateCounter('nama_transaksi', 'nama_transaksi_counter', 25);
+            updateCounter('kategori', 'kategori_counter', 25);
             updateCounter('catatan', 'catatan_counter', 50);
 
             document.getElementById('modalOverlay').classList.add('active');

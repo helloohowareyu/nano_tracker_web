@@ -26,10 +26,10 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama_transaksi' => 'required|string|max:50',
+            'nama_transaksi' => 'required|string|max:25',
             'tipe' => 'required|in:pemasukan,pengeluaran',
             'nominal' => 'required|numeric|min:0',
-            'kategori' => 'required|string|max:30',
+            'kategori' => 'required|string|max:25',
             'waktu_transaksi' => 'required|date',
             'catatan' => 'nullable|string|max:50'
         ]);
@@ -51,10 +51,10 @@ class TransaksiController extends Controller
     {
         $validated = $request->validate(
             [
-                'nama_transaksi' => 'required|string|max:50',
+                'nama_transaksi' => 'required|string|max:25',
                 'tipe' => 'required|in:pemasukan,pengeluaran',
                 'nominal' => 'required|numeric|min:0',
-                'kategori' => 'required|string|max:30',
+                'kategori' => 'required|string|max:25',
                 'waktu_transaksi' => 'required|date',
                 'catatan' => 'nullable|string|max:50'
             ]
