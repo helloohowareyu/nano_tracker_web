@@ -527,11 +527,24 @@
         }
 
         .form-label {
-            display: block;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-size: 14px;
             font-weight: 600;
             color: var(--color-navy);
             margin-bottom: 8px;
+        }
+
+        .char-counter {
+            font-size: 11px;
+            color: var(--color-text-muted);
+            font-weight: normal;
+        }
+
+        .char-counter.limit-reached {
+            color: var(--color-expense);
+            font-weight: 700;
         }
 
         .type-toggle {
@@ -982,6 +995,30 @@
             allowInput: true
         });
 
+        function updateCounter(inputId, counterId, maxLength) {
+            const input = document.getElementById(inputId);
+            const counter = document.getElementById(counterId);
+            const length = input ? input.value.length : 0;
+            if (counter) {
+                counter.innerText = `${length}/${maxLength}`;
+                if (length >= maxLength) {
+                    counter.classList.add('limit-reached');
+                } else {
+                    counter.classList.remove('limit-reached');
+                }
+            }
+        }
+
+        document.getElementById('nama_transaksi').addEventListener('input', function() {
+            updateCounter('nama_transaksi', 'nama_transaksi_counter', 50);
+        });
+        document.getElementById('kategori').addEventListener('input', function() {
+            updateCounter('kategori', 'kategori_counter', 30);
+        });
+        document.getElementById('catatan').addEventListener('input', function() {
+            updateCounter('catatan', 'catatan_counter', 50);
+        });
+
         function openModal() {
             document.getElementById('modalTitle').innerText = 'Tambah Transaksi';
 
@@ -999,6 +1036,10 @@
             tanggalPicker.setDate(now);
             document.getElementById('jam_transaksi_hour').value = currentHour;
             document.getElementById('jam_transaksi_minute').value = currentMinute;
+
+            updateCounter('nama_transaksi', 'nama_transaksi_counter', 50);
+            updateCounter('kategori', 'kategori_counter', 30);
+            updateCounter('catatan', 'catatan_counter', 50);
 
             document.getElementById('modalOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1024,7 +1065,13 @@
             const hourPart = timeParts[0] || '00';
             const minutePart = timeParts[1] || '00';
 
-            tanggalPicker.setDate(datePart);
+            const dateSplit = datePart.split('-');
+            const year = parseInt(dateSplit[0]);
+            const month = parseInt(dateSplit[1]) - 1;
+            const day = parseInt(dateSplit[2]);
+            const safeDate = new Date(year, month, day);
+
+            tanggalPicker.setDate(safeDate);
             document.getElementById('jam_transaksi_hour').value = hourPart;
             document.getElementById('jam_transaksi_minute').value = minutePart;
 
@@ -1033,6 +1080,10 @@
             } else {
                 document.getElementById('pengeluaran').checked = true;
             }
+
+            updateCounter('nama_transaksi', 'nama_transaksi_counter', 50);
+            updateCounter('kategori', 'kategori_counter', 30);
+            updateCounter('catatan', 'catatan_counter', 50);
 
             document.getElementById('modalOverlay').classList.add('active');
             document.body.style.overflow = 'hidden';
