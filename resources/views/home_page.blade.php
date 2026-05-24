@@ -27,13 +27,16 @@
         }
 
         .top-bar {
-            background-color: var(--color-top-bar);
+            background-color: #FFFFFF;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             width: 100%;
-            padding: 16px 48px;
+            padding: 20px 30px;
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            padding-left: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .top-bar-inner {
@@ -44,8 +47,13 @@
             justify-content: flex-start;
         }
 
+        .logo-link {
+            display: flex;
+            align-items: center;
+        }
+
         .logo {
-            height: 50px;
+            height: 45px;
             width: auto;
         }
 
@@ -184,7 +192,9 @@
 
 <body>
     <header class="top-bar">
-        <img src="{{ asset('assets/logo.png') }}" alt="Nano Tracker Logo" class="logo">
+        <a href="{{ route('home_page') }}" class="logo-link">
+            <img src="{{ asset('assets/logo.png') }}" alt="Nano Tracker Logo" class="logo">
+        </a>
     </header>
 
     <main class="main-content">

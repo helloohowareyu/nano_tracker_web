@@ -28,12 +28,11 @@
 
         .top-bar {
             width: 100%;
-            height: 60px;
-            background-color: var(--color-white);
+            padding: 20px 30px;
+            background-color: transparent;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0px 30px;
         }
 
         .logo-link {
@@ -41,13 +40,15 @@
             align-items: center;
         }
 
-        .top-bar img {
-            height: 50px;
+        .logo {
+            height: 45px;
             width: auto;
+            filter: brightness(0) invert(1);
+            opacity: 0.9;
         }
 
         .back-link {
-            color: var(--color-navy);
+            color: #ffffff;
             text-decoration: none;
             font-size: 14px;
             font-weight: 600;
@@ -189,36 +190,38 @@
             height: 18px;
         }
 
-        .register-text {
+        .auth-switch-text {
             text-align: center;
-            font-size: 13px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 500;
             color: var(--color-navy);
-            margin-top: 4px;
+            margin-top: 16px;
         }
 
-        .register-text a {
-            color: var(--color-green);
+        .auth-switch-text a {
+            color: #22c55e;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
             margin-left: 4px;
+            transition: color 0.2s ease;
         }
 
-        .register-text a:hover {
+        .auth-switch-text a:hover {
+            color: #15803d;
             text-decoration: underline;
         }
     </style>
 </head>
 
 <body>
-    <div class="top-bar">
+    <header class="top-bar">
         <a href="{{ route('home_page') }}" class="logo-link">
-            <img src="{{ asset('assets/logo.png') }}" alt="Nano Tracker Logo">
+            <img src="{{ asset('assets/logo.png') }}" alt="Nano Tracker Logo" class="logo">
         </a>
         <a href="{{ route('home_page') }}" class="back-link">
             &larr; Kembali ke Beranda
         </a>
-    </div>
+    </header>
 
     <div class="page-wrapper">
         <div class="login-card">
@@ -259,7 +262,7 @@
                 Masuk dengan google
             </a>
 
-            <p class="register-text">
+            <p class="auth-switch-text">
                 Belum punya akun? <a href="{{ route('register') }}">Daftar Sekarang</a>
             </p>
         </div>
