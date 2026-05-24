@@ -917,10 +917,13 @@
                     @csrf
                     <input type="hidden" name="_method" id="formMethod" value="POST">
                     <div class="form-group">
-                        <label class="form-label" for="nama_transaksi">Nama Transaksi</label>
+                        <label class="form-label" for="nama_transaksi">
+                            Nama Transaksi
+                            <span class="char-counter" id="nama_transaksi_counter">0/50</span>
+                        </label>
                         <input type="text" name="nama_transaksi" id="nama_transaksi"
                             class="form-input neutral @error('nama_transaksi') is-invalid @enderror"
-                            placeholder="Contoh: Beli Kopi, Gaji Bulanan" required>
+                            placeholder="Contoh: Beli Kopi, Gaji Bulanan" maxlength="50" required>
                     </div>
 
                     <div class="form-group">
@@ -940,9 +943,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="kategori">Kategori</label>
+                        <label class="form-label" for="kategori">
+                            Kategori
+                            <span class="char-counter" id="kategori_counter">0/30</span>
+                        </label>
                         <input type="text" name="kategori" id="kategori"
-                            class="form-input neutral @error('kategori') is-invalid @enderror" required>
+                            class="form-input neutral @error('kategori') is-invalid @enderror" maxlength="30" required>
                     </div>
 
                     <div class="form-group">
@@ -962,8 +968,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="catatan">Catatan</label>
-                        <textarea name="catatan" id="catatan" class="form-textarea" placeholder="Catatan singkat detail transaksi"></textarea>
+                        <label class="form-label" for="catatan">
+                            Catatan
+                            <span class="char-counter" id="catatan_counter">0/50</span>
+                        </label>
+                        <textarea name="catatan" id="catatan" class="form-textarea" placeholder="Catatan singkat detail transaksi" maxlength="50"></textarea>
                     </div>
 
                     <button type="submit" class="btn-submit">Konfirmasi</button>
